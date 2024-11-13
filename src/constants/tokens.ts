@@ -46,6 +46,13 @@ export const WETH9_EXTENDED: { [chainId: number]: Token } = {
     'WETH',
     'Wrapped Ether'
   ),
+  [SupportedChainId.HASHKEY_TESTNET]: new Token(
+    SupportedChainId.HASHKEY_TESTNET,
+    '0x41a0bD84E65e75Bc30AFBbe6ea142eBBcc347542',
+    18,
+    'WETH',
+    'Wrapped Ether'
+  ),
 }
 
 export class ExtendedEther extends Ether {

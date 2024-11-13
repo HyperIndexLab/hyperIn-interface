@@ -207,7 +207,7 @@ export default function Swap({ history }: RouteComponentProps) {
     if (signatureState === UseERC20PermitState.NOT_SIGNED && gatherPermitSignature) {
       try {
         await gatherPermitSignature()
-      } catch (error) {
+      } catch (error:any) {
         // try to approve if gatherPermitSignature failed for any reason other than the user rejecting it
         if (error?.code !== 4001) {
           await approveCallback()
@@ -489,7 +489,7 @@ export default function Swap({ history }: RouteComponentProps) {
                 {trade ? (
                   <RowFixed>
                     <TradePrice
-                      price={trade.executionPrice}
+                      price={trade.executionPrice as any}
                       showInverted={showInverted}
                       setShowInverted={setShowInverted}
                     />

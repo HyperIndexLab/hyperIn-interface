@@ -12,6 +12,7 @@ export function constructSameAddressMap<T extends string>(
       [SupportedChainId.GOERLI]: address,
       [SupportedChainId.KOVAN]: address,
       [SupportedChainId.ARBITRUM_ONE]: address,
+      [SupportedChainId.HASHKEY_TESTNET]:address
     }
   return {
     [SupportedChainId.MAINNET]: address,
@@ -19,5 +20,7 @@ export function constructSameAddressMap<T extends string>(
     [SupportedChainId.RINKEBY]: address,
     [SupportedChainId.GOERLI]: address,
     [SupportedChainId.KOVAN]: address,
+    [SupportedChainId.HASHKEY_TESTNET]:address
+
   }
 }

@@ -124,7 +124,7 @@ export default function SwapModalHeader({
         <TYPE.body color={theme.text2} fontWeight={500} fontSize={14}>
           <Trans>Price</Trans>
         </TYPE.body>
-        <TradePrice price={trade.executionPrice} showInverted={showInverted} setShowInverted={setShowInverted} />
+        <TradePrice price={trade.executionPrice as any} showInverted={showInverted} setShowInverted={setShowInverted} />
       </RowBetween>
 
       <LightCard style={{ padding: '.75rem', marginTop: '0.5rem' }}>
