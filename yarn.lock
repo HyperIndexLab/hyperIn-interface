@@ -1742,7 +1742,7 @@
     "@ethersproject/bytes" "^5.7.0"
     "@ethersproject/logger" "^5.7.0"
 
-"@ethersproject/sha2@5.2.0", "@ethersproject/sha2@^5.2.0":
+"@ethersproject/sha2@5.2.0", "@ethersproject/sha2@^5.0.0", "@ethersproject/sha2@^5.2.0":
   version "5.2.0"
   resolved "https://registry.npmjs.org/@ethersproject/sha2/-/sha2-5.2.0.tgz"
   integrity sha512-Wqqptfn0PRO2mvmpktPW1HOLrrCyGtxhVQxO1ZyePoGrcEOurhICOlIvkTogoX4Q928D3Z9XtSSCUbdOJUF2kg==
@@ -1782,9 +1782,20 @@
     "@ethersproject/sha2" "^5.2.0"
     "@ethersproject/strings" "^5.2.0"
 
-"@ethersproject/solidity@^5.0.0", "@ethersproject/solidity@^5.0.9":
+"@ethersproject/solidity@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.npmjs.org/@ethersproject/solidity/-/solidity-5.0.0.tgz"
+  integrity sha512-jHhT2fvz3qOR53b5ja54iURVWChvmPz3w+G/wCRaSUOwuWmorcOIoBKvgNJ87ix/kr+Y9EykYkJ2Cymb6m4oVg==
+  dependencies:
+    "@ethersproject/bignumber" "^5.0.0"
+    "@ethersproject/bytes" "^5.0.0"
+    "@ethersproject/keccak256" "^5.0.0"
+    "@ethersproject/sha2" "^5.0.0"
+    "@ethersproject/strings" "^5.0.0"
+
+"@ethersproject/solidity@^5.0.9":
   version "5.7.0"
-  resolved "https://registry.yarnpkg.com/@ethersproject/solidity/-/solidity-5.7.0.tgz#5e9c911d8a2acce2a5ebb48a5e2e0af20b631cb8"
+  resolved "https://registry.npmjs.org/@ethersproject/solidity/-/solidity-5.7.0.tgz"
   integrity sha512-HmabMd2Dt/raavyaGukF4XxizWKhKQ24DoLtdNbBmNKUOPqwjsKQSdV9GQtj9CBEea9DlzETlVER1gYeXXBGaA==
   dependencies:
     "@ethersproject/bignumber" "^5.7.0"
@@ -1794,7 +1805,7 @@
     "@ethersproject/sha2" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
-"@ethersproject/strings@5.2.0", "@ethersproject/strings@^5.2.0":
+"@ethersproject/strings@5.2.0", "@ethersproject/strings@^5.0.0", "@ethersproject/strings@^5.2.0":
   version "5.2.0"
   resolved "https://registry.npmjs.org/@ethersproject/strings/-/strings-5.2.0.tgz"
   integrity sha512-RmjX800wRYKgrzo2ZCSlA8OCQYyq4+M46VgjSVDVyYkLZctBXC3epqlppDA24R7eo856KNbXqezZsMnHT+sSuA==
@@ -3418,7 +3429,7 @@
 
 "@uniswap/sdk-core@^4.0.7":
   version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@uniswap/sdk-core/-/sdk-core-4.2.1.tgz#7b8c6fee48446bb67a4e6f2e9cb94c862034a6c3"
+  resolved "https://registry.npmjs.org/@uniswap/sdk-core/-/sdk-core-4.2.1.tgz"
   integrity sha512-hr7vwYrXScg+V8/rRc2UL/Ixc/p0P7yqe4D/OxzUdMRYr8RZd+8z5Iu9+WembjZT/DCdbTjde6lsph4Og0n1BQ==
   dependencies:
     "@ethersproject/address" "^5.0.2"
@@ -3453,7 +3464,7 @@
 
 "@uniswap/v2-sdk@^3.0.0-alpha.2":
   version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@uniswap/v2-sdk/-/v2-sdk-3.3.0.tgz#76c95d234fe73ca6ad34ba9509f7451955ee0ce7"
+  resolved "https://registry.npmjs.org/@uniswap/v2-sdk/-/v2-sdk-3.3.0.tgz"
   integrity sha512-cf5PjoNQN5tNELIOVJsqV4/VeuDtxFw6Zl8oFmFJ6PNoQ8sx+XnGoO0aGKTB/o5II3oQ7820xtY3k47UsXgd6A==
   dependencies:
     "@ethersproject/address" "^5.0.0"
@@ -3627,7 +3638,7 @@
 
 "@walletconnect/types@^1.4.2-rc.2", "@walletconnect/types@^1.8.0":
   version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@walletconnect/types/-/types-1.8.0.tgz#3f5e85b2d6b149337f727ab8a71b8471d8d9a195"
+  resolved "https://registry.npmjs.org/@walletconnect/types/-/types-1.8.0.tgz"
   integrity sha512-Cn+3I0V0vT9ghMuzh1KzZvCkiAxTq+1TR2eSqw5E5AVWfmCtECFkVZBP6uUJZ8YjwLqXheI+rnjqPy7sVM4Fyg==
 
 "@walletconnect/utils@^1.4.2-rc.2", "@walletconnect/utils@^1.8.0":
@@ -9514,9 +9525,9 @@ human-signals@^2.1.0:
   resolved "https://registry.npmjs.org/human-signals/-/human-signals-2.1.0.tgz"
   integrity sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==
 
-@uniswap/v2-sdk@^1.0.2:
+hypherin-sdk@^1.0.2:
   version "1.0.2"
-  resolved "https://registry.npmjs.org/@uniswap/v2-sdk/-/@uniswap/v2-sdk-1.0.2.tgz"
+  resolved "https://registry.npmjs.org/hypherin-sdk/-/hypherin-sdk-1.0.2.tgz"
   integrity sha512-9F+hRnvkFb8Q3ZXsHqaXBwHnOaxteo/yw7sR0/4jOlf4MZeFfE09sQ/qTI0+fNA0efVqZclDfwrIxgiz512Jkg==
   dependencies:
     "@uniswap/v2-core" "1.0.0"

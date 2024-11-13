@@ -1,3 +1,4 @@
+import { FACTORY_ADDRESS as V2_FACTORY_ADDRESS } from 'hypherin-sdk'
 import { FACTORY_ADDRESS as V3_FACTORY_ADDRESS } from '@uniswap/v3-sdk'
 import { constructSameAddressMap } from '../utils/constructSameAddressMap'
 import { SupportedChainId } from './chains'
@@ -10,10 +11,7 @@ export const MULTICALL2_ADDRESSES: AddressMap = {
   [SupportedChainId.ARBITRUM_KOVAN]: '0xc80e33a6f02cf08557a0ca3d94d1474d73f64bc1',
   [SupportedChainId.ARBITRUM_ONE]: '0x021CeAC7e681dBCE9b5039d2535ED97590eB395c',
 }
-export const V2_FACTORY_ADDRESSES: AddressMap = constructSameAddressMap(
-  '0x9260bb1a28A1fD9f8DbD4386577003B51bb07FA6', // Hashkey
-  false
-)
+export const V2_FACTORY_ADDRESSES: AddressMap = constructSameAddressMap(V2_FACTORY_ADDRESS, false)
 export const V2_ROUTER_ADDRESS: AddressMap = constructSameAddressMap(
   '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
   false
