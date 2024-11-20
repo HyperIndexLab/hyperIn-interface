@@ -114,8 +114,9 @@ export default function RemoveLiquidity({
       { name: 'chainId', type: 'uint256' },
       { name: 'verifyingContract', type: 'address' }
     ]
+    // pair.liquidityToken.
     const domain = {
-      name: 'Uniswap V2',
+      name: 'LP Token',
       version: '1',
       chainId: chainId,
       verifyingContract: pair.liquidityToken.address
@@ -274,6 +275,9 @@ export default function RemoveLiquidity({
     } else {
       throw new Error('Attempting to confirm without approval or a signature. Please contact support.')
     }
+
+    console.log(`方法名：`,methodNames)
+    console.log(`args`,args)
 
     const safeGasEstimates: (BigNumber | undefined)[] = await Promise.all(
       methodNames.map(methodName =>
