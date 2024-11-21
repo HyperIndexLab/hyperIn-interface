@@ -19,6 +19,7 @@ import { ButtonError } from '../Button'
 import { useSettingsMenuOpen, useToggleSettingsMenu } from '../../state/application/hooks'
 import { Text } from 'rebass'
 import Modal from '../Modal'
+import ConfirmInputModal from './ConfirmInputModal'
 
 const StyledMenuIcon = styled(Settings)`
   height: 20px;
@@ -29,17 +30,17 @@ const StyledMenuIcon = styled(Settings)`
   }
 `
 
-const StyledCloseIcon = styled(X)`
-  height: 20px;
-  width: 20px;
-  :hover {
-    cursor: pointer;
-  }
+// const StyledCloseIcon = styled(X)`
+//   height: 20px;
+//   width: 20px;
+//   :hover {
+//     cursor: pointer;
+//   }
 
-  > * {
-    stroke: ${({ theme }) => theme.text1};
-  }
-`
+//   > * {
+//     stroke: ${({ theme }) => theme.text1};
+//   }
+// `
 
 const StyledMenuButton = styled.button`
   position: relative;
@@ -106,19 +107,76 @@ const MenuFlyout = styled.span`
   `};
 `
 
-const Break = styled.div`
+// const Break = styled.div`
+//   width: 100%;
+//   height: 1px;
+//   background-color: ${({ theme }) => theme.bg3};
+//   margin: 1rem 0;
+// `
+
+const ModalWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: ${({ theme }) => theme.bg1};
+  border-radius: 20px;
   width: 100%;
-  height: 1px;
-  background-color: ${({ theme }) => theme.bg3};
+  max-width: 420px;
+  position: relative;
 `
 
-const ModalContentWrapper = styled.div`
+const ModalHeader = styled.div`
+  padding: 16px 24px;
+  height: 48px;
+  font-size: 14px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.text1};
+  border-bottom: 1px solid ${({ theme }) => theme.bg3};
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 2rem 0;
-  background-color: ${({ theme }) => theme.bg2};
-  border-radius: 20px;
+`
+
+const ModalBody = styled.div`
+  padding: 24px;
+  font-weight: 500;
+  line-height: 1.5;
+`
+
+const WarningText = styled.div`
+  color: ${({ theme }) => theme.red1};
+  font-weight: 600;
+  text-align: center;
+  margin: 0 24px;
+`
+
+const CloseButton = styled.div`
+  position: absolute;
+  right: 24px;
+  top: 16px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  &:hover {
+    opacity: 1;
+  }
+`
+
+const ConfirmButton = styled(ButtonError)`
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: ${({ theme }) => theme.red1};
+  transition: all 0.2s ease;
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+`
+
+const StyledButton = styled(ConfirmButton)`
+  max-width: 320px;
+  margin: 24px auto;
 `
 
 export default function SettingsTab() {
@@ -137,49 +195,49 @@ export default function SettingsTab() {
 
   // show confirmation view before turning on
   const [showConfirmation, setShowConfirmation] = useState(false)
+  const [showInputModal, setShowInputModal] = useState(false)
 
   useOnClickOutside(node, open ? toggle : undefined)
 
   return (
     // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30451
     <StyledMenu ref={node as any}>
-      <Modal isOpen={showConfirmation} onDismiss={() => setShowConfirmation(false)} maxHeight={100}>
-        <ModalContentWrapper>
-          <AutoColumn gap="lg">
-            <RowBetween style={{ padding: '0 2rem' }}>
-              <div />
-              <Text fontWeight={500} fontSize={20}>
-                Are you sure?
-              </Text>
-              <StyledCloseIcon onClick={() => setShowConfirmation(false)} />
-            </RowBetween>
-            <Break />
-            <AutoColumn gap="lg" style={{ padding: '0 2rem' }}>
-              <Text fontWeight={500} fontSize={20}>
-                Expert mode turns off the confirm transaction prompt and allows high slippage trades that often result
-                in bad rates and lost funds.
-              </Text>
-              <Text fontWeight={600} fontSize={20}>
-                ONLY USE THIS MODE IF YOU KNOW WHAT YOU ARE DOING.
-              </Text>
-              <ButtonError
-                error={true}
-                padding={'12px'}
-                onClick={() => {
-                  if (window.prompt(`Please type the word "confirm" to enable expert mode.`) === 'confirm') {
-                    toggleExpertMode()
-                    setShowConfirmation(false)
-                  }
-                }}
-              >
-                <Text fontSize={20} fontWeight={500} id="confirm-expert-mode">
-                  Turn On Expert Mode
-                </Text>
-              </ButtonError>
-            </AutoColumn>
-          </AutoColumn>
-        </ModalContentWrapper>
+      <Modal isOpen={showConfirmation} onDismiss={() => setShowConfirmation(false)}>
+        <ModalWrapper>
+          <CloseButton onClick={() => setShowConfirmation(false)}>
+            <X size={18} />
+          </CloseButton>
+          <ModalHeader> Enable Expert Mode </ModalHeader>
+
+          <ModalBody>
+            <strong>
+              Expert mode turns off the confirm transaction prompt and allows high slippage trades that often result in
+              bad rates and lost funds.
+            </strong>
+          </ModalBody>
+
+          <WarningText>
+            <strong>ONLY USE THIS MODE IF YOU KNOW WHAT YOU ARE DOING.</strong>
+          </WarningText>
+
+          <StyledButton error={true} onClick={() => setShowInputModal(true)}>
+            Turn On Expert Mode
+          </StyledButton>
+        </ModalWrapper>
       </Modal>
+
+      <ConfirmInputModal
+        isOpen={showInputModal}
+        onConfirm={value => {
+          if (value === 'confirm') {
+            toggleExpertMode()
+            setShowConfirmation(false)
+          }
+          setShowInputModal(false)
+        }}
+        onDismiss={() => setShowInputModal(false)}
+      />
+
       <StyledMenuButton onClick={toggle} id="open-settings-dialog-button">
         <StyledMenuIcon />
         {expertMode && (
