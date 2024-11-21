@@ -1,4 +1,4 @@
-import { Pair,Currency } from 'hypherin-sdk'
+import { Pair, Currency } from 'hypherin-sdk'
 import React, { useState, useContext, useCallback } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { darken } from 'polished'
