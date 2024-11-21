@@ -1,25 +1,26 @@
-import { ChainId } from 'hypherin-sdk'
+// import { ChainId } from 'hypherin-sdk'
 import React from 'react'
 import { isMobile } from 'react-device-detect'
 import { Text } from 'rebass'
 
 import styled from 'styled-components'
 
-import Logo from '../../assets/svg/logo.svg'
-import LogoDark from '../../assets/svg/logo_white.svg'
-import Wordmark from '../../assets/svg/wordmark.svg'
-import WordmarkDark from '../../assets/svg/wordmark_white.svg'
+// import Logo from '../../assets/svg/logo.svg'
+// import LogoDark from '../../assets/svg/logo_white.svg'
+import Wordmark from '../../assets/images/logo.png'
+import WordmarkDark from '../../assets/images/logo-dark.png'
 import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances } from '../../state/wallet/hooks'
+import hskLogo from '../../assets/images/hsk-logo.png'
 
 import { YellowCard } from '../Card'
 import Settings from '../Settings'
-import Menu from '../Menu'
+// import Menu from '../Menu'
 
 import Row, { RowBetween } from '../Row'
 import Web3Status from '../Web3Status'
-import VersionSwitch from './VersionSwitch'
+// import VersionSwitch from './VersionSwitch'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -86,28 +87,31 @@ const AccountElement = styled.div<{ active: boolean }>`
 const TestnetWrapper = styled.div`
   white-space: nowrap;
   width: fit-content;
-  margin-left: 10px;
   pointer-events: auto;
+  background-color: none;
+  padding: 0;
 `
 
 const NetworkCard = styled(YellowCard)`
   width: fit-content;
-  margin-right: 10px;
-  border-radius: 12px;
-  padding: 8px 12px;
+  border-radius: 50%;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
-const UniIcon = styled.div`
-  transition: transform 0.3s ease;
-  :hover {
-    transform: rotate(-5deg);
-  }
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    img { 
-      width: 4.5rem;
-    }
-  `};
-`
+// const UniIcon = styled.div`
+//   transition: transform 0.3s ease;
+//   :hover {
+//     transform: rotate(-5deg);
+//   }
+//   ${({ theme }) => theme.mediaWidth.upToSmall`
+//     img {
+//       width: 4.5rem;
+//     }
+//   `};
+// `
 
 const HeaderControls = styled.div`
   display: flex;
@@ -126,13 +130,16 @@ const BalanceText = styled(Text)`
   `};
 `
 
-const NETWORK_LABELS: { [chainId in ChainId]: string | null } = {
-  [ChainId.MAINNET]: null,
-  [ChainId.RINKEBY]: 'Rinkeby',
-  [ChainId.ROPSTEN]: 'Ropsten',
-  [ChainId.GÖRLI]: 'Görli',
-  [ChainId.KOVAN]: 'Kovan',
-  [ChainId.HASHKEY_TESTNET]:'HashKey Sepolia'
+type SupportedChainId = 1 | 133
+
+const NETWORK_LABELS: { [chainId in SupportedChainId]: string | null } = {
+  [1]: null,
+  [133]: 'HashKey Sepolia'
+}
+
+const NETWORK_CONFIG: { [chainId in SupportedChainId]: { logo: string } } = {
+  [1]: { logo: '' }, // 主网不显示logo
+  [133]: { logo: hskLogo } // HashKey 测试网显示logo
 }
 
 export default function Header() {
@@ -143,35 +150,49 @@ export default function Header() {
 
   return (
     <HeaderFrame>
-      <RowBetween style={{ alignItems: 'flex-start' }} padding="1rem 1rem 0 1rem">
+      <RowBetween style={{ alignItems: 'center' }} padding="1rem 1rem 0 1rem">
         <HeaderElement>
           <Title href=".">
-            <UniIcon>
+            {/* <UniIcon>
               <img src={isDark ? LogoDark : Logo} alt="logo" />
-            </UniIcon>
+            </UniIcon> */}
             <TitleText>
-              <img style={{ marginLeft: '4px', marginTop: '4px' }} src={isDark ? WordmarkDark : Wordmark} alt="logo" />
+              <img
+                style={{ width: '66px', height: '28px', marginLeft: '4px', marginTop: '4px' }}
+                src={isDark ? WordmarkDark : Wordmark}
+                alt="logo"
+              />
             </TitleText>
           </Title>
         </HeaderElement>
         <HeaderControls>
           <HeaderElement>
             <TestnetWrapper>
-              {!isMobile && chainId && NETWORK_LABELS[chainId] && <NetworkCard>{NETWORK_LABELS[chainId]}</NetworkCard>}
+              {!isMobile && chainId && (chainId as SupportedChainId) in NETWORK_LABELS && (
+                <NetworkCard>
+                  {NETWORK_CONFIG[chainId as SupportedChainId].logo && (
+                    <img
+                      src={NETWORK_CONFIG[chainId as SupportedChainId].logo}
+                      alt="Network Logo"
+                      style={{ width: '24px', height: '24px', borderRadius: '50%' }}
+                    />
+                  )}
+                </NetworkCard>
+              )}
             </TestnetWrapper>
             <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
               {account && userEthBalance ? (
                 <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                  {userEthBalance?.toSignificant(4)} ETH
+                  {userEthBalance?.toSignificant(4)} HSK
                 </BalanceText>
               ) : null}
               <Web3Status />
             </AccountElement>
           </HeaderElement>
           <HeaderElementWrap>
-            <VersionSwitch />
+            {/* <VersionSwitch /> */}
             <Settings />
-            <Menu />
+            {/* <Menu /> */}
           </HeaderElementWrap>
         </HeaderControls>
       </RowBetween>

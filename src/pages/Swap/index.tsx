@@ -14,13 +14,13 @@ import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { AutoRow, RowBetween } from '../../components/Row'
 import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
 import BetterTradeLink from '../../components/swap/BetterTradeLink'
-import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
 import { ArrowWrapper, BottomGrouping, SwapCallbackError, Wrapper } from '../../components/swap/styleds'
 import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
+import PriceImpactConfirmModal from '../../components/PriceImpactConfirmModal'
 
-import { BETTER_TRADE_LINK_THRESHOLD, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
+import { ALLOWED_PRICE_IMPACT_HIGH, BETTER_TRADE_LINK_THRESHOLD, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
 import { getTradeVersion, isTradeBetter } from '../../data/V1'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
@@ -53,6 +53,9 @@ export default function Swap() {
     useCurrency(loadedUrlParams?.inputCurrencyId),
     useCurrency(loadedUrlParams?.outputCurrencyId)
   ]
+
+  const [confirmPriceImpact, setConfirmPriceImpact] = useState<boolean>(false)
+
   const [dismissTokenWarning, setDismissTokenWarning] = useState<boolean>(false)
   const urlLoadedTokens: Token[] = useMemo(
     () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
@@ -135,6 +138,11 @@ export default function Swap() {
     [onUserInput]
   )
 
+  // Add new states for price impact confirmation
+  const [showPriceImpactConfirm, setShowPriceImpactConfirm] = useState<boolean>(false)
+  const [requireExactConfirmation, setRequireExactConfirmation] = useState<boolean>(false)
+  const [priceImpactValue, setPriceImpactValue] = useState<string>('')
+
   // modal and loading
   const [{ showConfirm, tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     showConfirm: boolean
@@ -189,18 +197,39 @@ export default function Swap() {
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
 
+  // Modify handleSwap to handle price impact confirmation
   const handleSwap = useCallback(() => {
-    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
-      return
+    if (priceImpactWithoutFee && !priceImpactWithoutFee.lessThan(ALLOWED_PRICE_IMPACT_HIGH)) {
+      if (!confirmPriceImpact) {
+        setRequireExactConfirmation(false)
+        setPriceImpactValue(ALLOWED_PRICE_IMPACT_HIGH.toFixed(0))
+        setShowPriceImpactConfirm(true)
+        return
+      }
     }
+
     if (!swapCallback) {
       return
     }
-    setSwapState({ attemptingTxn: true, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: undefined })
+
+    // 设置交易状态为 pending
+    setSwapState({
+      attemptingTxn: true,
+      tradeToConfirm,
+      showConfirm: true,
+      swapErrorMessage: undefined,
+      txHash: undefined
+    })
+
     swapCallback()
       .then(hash => {
-        setSwapState({ attemptingTxn: false, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: hash })
-
+        setSwapState({
+          attemptingTxn: false,
+          tradeToConfirm,
+          showConfirm: true,
+          swapErrorMessage: undefined,
+          txHash: hash
+        })
         ReactGA.event({
           category: 'Swap',
           action:
@@ -220,12 +249,36 @@ export default function Swap() {
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
-          showConfirm,
+          showConfirm: true,
           swapErrorMessage: error.message,
           txHash: undefined
         })
       })
-  }, [tradeToConfirm, account, priceImpactWithoutFee, recipient, recipientAddress, showConfirm, swapCallback, trade])
+  }, [priceImpactWithoutFee, confirmPriceImpact, swapCallback, tradeToConfirm])
+
+  // Add handler for price impact confirmation
+  const handlePriceImpactConfirm = useCallback(() => {
+    setConfirmPriceImpact(true)
+    setShowPriceImpactConfirm(false)
+    // 直接执行 swapCallback，而不是调用 handleSwap
+    if (!swapCallback) return
+    setSwapState({ attemptingTxn: true, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: undefined })
+    swapCallback()
+      .then(hash => {
+        setSwapState({ attemptingTxn: false, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: hash })
+        setConfirmPriceImpact(false)
+      })
+      .catch(error => {
+        setSwapState({
+          attemptingTxn: false,
+          tradeToConfirm,
+          showConfirm,
+          swapErrorMessage: error.message,
+          txHash: undefined
+        })
+        setConfirmPriceImpact(false)
+      })
+  }, [swapCallback, tradeToConfirm, showConfirm])
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false)
@@ -417,11 +470,12 @@ export default function Swap() {
                     } else {
                       setSwapState({
                         tradeToConfirm: trade,
-                        attemptingTxn: false,
+                        attemptingTxn: true,
                         swapErrorMessage: undefined,
                         showConfirm: true,
                         txHash: undefined
                       })
+                      handleSwap()
                     }
                   }}
                   width="48%"
@@ -446,23 +500,32 @@ export default function Swap() {
                   } else {
                     setSwapState({
                       tradeToConfirm: trade,
-                      attemptingTxn: false,
+                      attemptingTxn: true,
                       swapErrorMessage: undefined,
                       showConfirm: true,
                       txHash: undefined
                     })
+                    handleSwap()
                   }
                 }}
                 id="swap-button"
-                disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
+                disabled={
+                  !isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError || attemptingTxn
+                }
                 error={isValid && priceImpactSeverity > 2 && !swapCallbackError}
               >
                 <Text fontSize={20} fontWeight={500}>
-                  {swapInputError
-                    ? swapInputError
-                    : priceImpactSeverity > 3 && !isExpertMode
-                    ? `Price Impact Too High`
-                    : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
+                  {attemptingTxn ? (
+                    <AutoRow gap="6px" justify="center">
+                      Swapping <Loader stroke="white" />
+                    </AutoRow>
+                  ) : swapInputError ? (
+                    swapInputError
+                  ) : priceImpactSeverity > 3 && !isExpertMode ? (
+                    `Price Impact Too High`
+                  ) : (
+                    `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`
+                  )}
                 </Text>
               </ButtonError>
             )}
@@ -473,6 +536,13 @@ export default function Swap() {
         </Wrapper>
       </AppBody>
       <AdvancedSwapDetailsDropdown trade={trade} />
+      <PriceImpactConfirmModal
+        isOpen={showPriceImpactConfirm}
+        onConfirm={handlePriceImpactConfirm}
+        onDismiss={() => setShowPriceImpactConfirm(false)}
+        priceImpact={priceImpactValue}
+        requireExactConfirmation={requireExactConfirmation}
+      />
     </>
   )
 }
