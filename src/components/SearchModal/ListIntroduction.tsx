@@ -24,11 +24,11 @@ export default function ListIntroduction({ onSelectList }: { onSelectList: () =>
           />
           <img
             style={{ width: '100%', borderRadius: '12px' }}
-            src="https://cloudflare-ipfs.com/ipfs/QmRf1rAJcZjV3pwKTHfPdJh4RxR8yvRHkdLjZCsmp7T6hA"
+            src="https://hyper-index-dex.4everland.store/logo.png"
             alt="token-list-preview"
           />
           <Text style={{ marginBottom: '8px', textAlign: 'center' }}>
-            Uniswap now supports token lists. You can add your own custom lists via IPFS, HTTPS and ENS.{' '}
+            In.DEX now supports token lists. You can add your own custom lists via IPFS, HTTPS and ENS.{' '}
           </Text>
           <ButtonPrimary onClick={onSelectList} id="list-introduction-choose-a-list">
             Choose a list

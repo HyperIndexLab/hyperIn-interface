@@ -1,0 +1,80 @@
+{
+  "name": "index testnet tokens",
+  "timestamp": "2024-11-22T16:12:01.730994194Z",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 0
+  },
+  "tags": {},
+  "logoURI": "https://hyper-index-dex.4everland.store/hsk-logo.png",
+  "keywords": [
+    "hashkey",
+    "personal tokens"
+  ],
+  "tokens": [
+    {
+      "name": "Fee Token",
+      "address": "0x5628b5f0DdAA4392217d0B8B27CF843774595CcB",
+      "symbol": "FEE",
+      "decimals": 18,
+      "chainId": 133,
+      "tags": ["hashkey"],
+      "logoURI": "https://hyper-index-dex.4everland.store/logo.png"
+    },
+    {
+      "name": "USDT Token",
+      "address": "0x04bc4dE90115375347311F7684592eeeA073eb82",
+      "symbol": "USDT",
+      "decimals": 18,
+      "chainId": 133,
+      "tags": ["hashkey"],
+      "logoURI": "https://hyper-index-dex.4everland.store/logo.png"
+    },
+    {
+      "name": "Wrapped Ether",
+      "address": "0x41a0bD84E65e75Bc30AFBbe6ea142eBBcc347542",
+      "symbol": "WETH",
+      "decimals": 18,
+      "chainId": 133,
+      "tags": ["hashkey"],
+      "logoURI": "https://hyper-index-dex.4everland.store/logo.png"
+    },
+    {
+      "name": "Blacklist Token",
+      "address": "0x4B553847c64d405572a2BeB92E47Ce1dA15681EA",
+      "symbol": "BLACK",
+      "decimals": 18,
+      "chainId": 133,
+      "tags": ["hashkey"],
+      "logoURI": "https://hyper-index-dex.4everland.store/logo.png"
+    },
+    {
+      "name": "Basic Token",
+      "address": "0x48c0B4C385E1D16166502c352d26Dd86aaa12E7E",
+      "symbol": "BASIC",
+      "decimals": 18,
+      "chainId": 133,
+      "tags": ["hashkey"],
+      "logoURI": "https://hyper-index-dex.4everland.store/logo.png"
+    },
+    {
+      "name": "Pausable Token",
+      "address": "0x39675dE50be0C3CD68dA30E51cE3957695cA88d0",
+      "symbol": "PAUSE",
+      "decimals": 18,
+      "chainId": 133,
+      "tags": ["hashkey"],
+      "logoURI": "https://hyper-index-dex.4everland.store/logo.png"
+    },
+    {
+      "name": "Burnable Token",
+      "address": "0x89e95b5c0739a63Da021294dDCF6Dd9e66de4bD0",
+      "symbol": "BURN",
+      "decimals": 18,
+      "chainId": 133,
+      "tags": ["hashkey"],
+      "logoURI": "https://hyper-index-dex.4everland.store/logo.png"
+    }
+  ]
+}
