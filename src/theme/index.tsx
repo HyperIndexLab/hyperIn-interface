@@ -40,49 +40,45 @@ export function colors(darkMode: boolean): Colors {
     white,
     black,
 
-    // text
-    text1: darkMode ? '#FFFFFF' : '#000000',
-    text2: darkMode ? '#C3C5CB' : '#565A69',
-    text3: darkMode ? '#6C7284' : '#888D9B',
-    text4: darkMode ? '#565A69' : '#C3C5CB',
-    text5: darkMode ? '#2C2F36' : '#EDEEF2',
+    // text - 保持柔和的文本色调
+    text1: darkMode ? '#FFFFFF' : '#2E3338',
+    text2: darkMode ? '#E8E9EA' : '#4F5558',
+    text3: darkMode ? '#B0B4B7' : '#7A7D80',
+    text4: darkMode ? '#878A8C' : '#A5A8AA',
+    text5: darkMode ? '#4A4D50' : '#F5F6F7',
 
-    // backgrounds / greys
-    bg1: darkMode ? '#212429' : '#FFFFFF',
-    bg2: darkMode ? '#1B2126' : '#66b2ff54',
-    bg3: darkMode ? '#40444F' : '#EDEEF2',
-    bg4: darkMode ? '#565A69' : '#CED0D9',
-    bg5: darkMode ? '#6C7284' : '#888D9B',
+    // backgrounds - 使用带绿色调的中性色
+    bg1: darkMode ? '#1A1D1B' : '#FFFFFF', // 深色加入绿色微调
+    bg2: darkMode ? '#222826' : '#F7FAF8', // 次要背景带绿
+    bg3: darkMode ? '#2A332E' : '#EEF3F0', // 卡片背景
+    bg4: darkMode ? '#363F3A' : '#E5EAE7',
+    bg5: darkMode ? '#4A524D' : '#D1D8D4',
 
-    //specialty colors
-    modalBG: darkMode ? 'rgba(0,0,0,.425)' : 'rgba(0,0,0,0.3)',
-    advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
+    // specialty colors
+    modalBG: darkMode ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.25)',
+    advancedBG: darkMode ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.7)',
 
-    //primary colors
-    primary1: darkMode ? '#2172E5' : '#1B2126',
-    primary2: darkMode ? '#3680E7' : '#FF8CC3',
-    primary3: darkMode ? '#4D8FEA' : '#FF99C9',
-    primary4: darkMode ? '#376bad70' : '#3392FF',
-    primary5: darkMode ? '#153d6f70' : '#66b2ff54',
+    // primary colors - 使用北欧风格的绿色系列
+    primary1: darkMode ? '#8FBCAB' : '#5E8B7E', // 主绿色
+    primary2: darkMode ? '#88C0B0' : '#81A199',
+    primary3: darkMode ? '#A3BE8C' : '#88C0A0', // Nord 原生绿色
+    primary4: darkMode ? '#8FBCAB80' : '#5E8B7E80',
+    primary5: darkMode ? '#5E8B7E60' : '#81A19960',
 
     // color text
-    primaryText1: darkMode ? '#6da8ff' : '#1B2126',
+    primaryText1: darkMode ? '#88C0B0' : '#5E8B7E',
 
-    // secondary colors
-    secondary1: darkMode ? '#2172E5' : '#1B2126',
-    secondary2: darkMode ? '#17000b26' : '#3392FF',
-    secondary3: darkMode ? '#17000b26' : '#66b2ff54',
+    // secondary colors - 采用温暖的次要色
+    secondary1: darkMode ? '#D08770' : '#EBCB8B', // 暖橙色/暖黄色
+    secondary2: darkMode ? '#D0877080' : '#EBCB8B80',
+    secondary3: darkMode ? '#D0877060' : '#EBCB8B60',
 
-    // other
-    red1: '#FF6871',
-    red2: '#F82D3A',
-    green1: '#27AE60',
-    yellow1: '#FFE270',
-    yellow2: '#1B2126'
-
-    // dont wanna forget these blue yet
-    // blue4: darkMode ? '#153d6f70' : '#C4D9F8',
-    // blue5: darkMode ? '#153d6f70' : '#EBF4FF',
+    // other - 功能性颜色
+    red1: '#BF616A', // 北欧红
+    red2: '#D08770', // 珊瑚红
+    green1: '#A3BE8C', // 北欧绿
+    yellow1: '#EBCB8B', // 北欧黄
+    yellow2: '#D08770' // 暖橙色
   }
 }
 
