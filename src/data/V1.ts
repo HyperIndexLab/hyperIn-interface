@@ -111,14 +111,14 @@ export function useV1Trade(
   const inputIsETH = inputCurrency === ETHER
   const outputIsETH = outputCurrency === ETHER
 
-  // construct a direct or through ETH v1 route
+  // construct a direct or through HSK v1 route
   let pairs: Pair[] = []
   if (inputIsETH && outputPair) {
     pairs = [outputPair]
   } else if (outputIsETH && inputPair) {
     pairs = [inputPair]
   }
-  // if neither are ETH, it's token-to-token (if they both exist)
+  // if neither are HSK, it's token-to-token (if they both exist)
   else if (inputPair && outputPair) {
     pairs = [inputPair, outputPair]
   }
