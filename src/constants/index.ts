@@ -95,9 +95,9 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     href: null,
     color: '#E8831D'
   },
-  WALLET_CONNECT: {
+  OKX_WALLET: {
     connector: injected,
-    name: 'OKX wallet',
+    name: 'OKX Wallet',
     iconName: 'okx.png',
     description: 'Connect to Okx Wallet',
     href: null,
