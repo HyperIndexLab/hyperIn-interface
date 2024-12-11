@@ -33,6 +33,7 @@ export function useFetchListCallback(): (listUrl: string) => Promise<TokenList> 
   return useCallback(
     async (listUrl: string) => {
       const requestId = nanoid()
+      console.log('requestId===',requestId)
       dispatch(fetchTokenList.pending({ requestId, url: listUrl }))
       return getTokenList(listUrl, ensResolver)
         .then(tokenList => {

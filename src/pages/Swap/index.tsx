@@ -323,6 +323,8 @@ export default function Swap() {
     onCurrencySelection
   ])
 
+  console.log(urlLoadedTokens, "urlLoadedTokens===")
+
   return (
     <>
       <TokenWarningModal
