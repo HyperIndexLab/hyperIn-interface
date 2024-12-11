@@ -47,17 +47,21 @@ export default function Explore() {
 			label: t('price'),
 			value: "price"
 		},
-		// {
-		// 	label: t('1h'),
-		// 	value: "1h"
-		// },
-		// {
-		// 	label: t('1d'),
-		// 	value: "24h"
-		// },
+		{
+			label: t('1h'),
+			value: "change1H"
+		},
+		{
+			label: t('1d'),
+			value: "change24H"
+		},
 		{
 			label: t('FDV'),
 			value: "FDV"
+		},{
+
+			label: t('tradeVolume'),
+			value: "tradeVolume"
 		}],
 		2: [{
 			label: "#",
@@ -76,18 +80,17 @@ export default function Explore() {
 			value: "apy"
 		},
 		{
+			label: t('vol1d'),
+			value: "vol1d"
+		},
+		{
+			label: t('vol30d'),
+			value: "vol30d"
+		},
+		{
 			label: '',
 			value: ""
 		},
-
-		// {
-		// 	label: t('vol1d'),
-		// 	value: "vol1d"
-		// },
-		// {
-		// 	label: t('vol30d'),
-		// 	value: "vol30d"
-		// }
 		],
 	}
 		
@@ -123,7 +126,6 @@ export default function Explore() {
 			const pools = await fetchWrapper('/api/explore/pools');
 			const tokens = await fetchWrapper('/api/explore/tokens');
 
-			// pools 拆分 pairsName: "HUSDT/WHSK"， 匹配 tokens的 symbol，添加token address， token0，token1
 			pools.map((pool: any) => {
 				const pairs = pool.pairsName.split('/')
 				pairs.map((pair: any) => {
@@ -166,11 +168,10 @@ export default function Explore() {
 
 	// 	const contract = new ethers.Contract(contractAddress, contractAbi, provider);
 
-	// 	// 获取 Swap 事件日志
 	// 	const getSwapEvents = async (fromBlock: number, toBlock: string) => {
 	// 		try {
 	// 			console.log('Swap Event: fromBlock', fromBlock, toBlock);
-	// 			// 使用 queryFilter 获取 Swap 事件的日志
+			
 	// 			const events = await contract.queryFilter(
 	// 				contract, 
 	// 				fromBlock, 
@@ -216,7 +217,7 @@ export default function Explore() {
 				{/* 表头 */}
 				<div className="table-row header">
 					{tableTitleData.map((item: any) => (
-						<div className="table-cell" onClick={() => handleSort(item.value)} key={item.value}>
+						<div className={`table-cell ${item.value === 'change1H' || item.value === 'change24H' ? 'change' : ''}`} onClick={() => handleSort(item.value)} key={item.value}>
 							{item.label}
 						</div>
 					))}
@@ -229,7 +230,16 @@ export default function Explore() {
 								<div className="table-cell">{row.id}</div>
 								<div className="table-cell">{row.name}</div>
 								<div className="table-cell">{formatNumber(row.price, 8)} USDT</div>
+								<div className={`table-cell change ${row.change1H >= 0 ? 'green' : 'red'}`}>
+									<div className="triangle"></div>
+									{formatNumber(row.change1H, 2)}%
+								</div>
+								<div className={`table-cell change ${row.change24H >= 0 ? 'green' : 'red'}`}>
+									<div className="triangle"></div>
+									{formatNumber(row.change24H, 2)}%
+								</div>
 								<div className="table-cell">{formatNumber(row.FDV, 2)} USDT</div>
+								<div className="table-cell">{formatNumber(row.tradingVolume, 2)} USDT</div>
 							</div>
 						</NavLink>
 					)
@@ -242,6 +252,8 @@ export default function Explore() {
 								<div className="table-cell">{row.pairsName}</div>
 								<div className="table-cell">{formatNumber(row.TVL, 1)} USDT</div>
 								<div className="table-cell">{formatNumber(row.APY, 3)}%</div>
+								<div className="table-cell">{formatNumber(row.tradingVolume1D, 2)} USDT</div>
+								<div className="table-cell">{formatNumber(row.tradingVolume30D, 2)} USDT</div>
 								<div className="table-cell control">
 									<NavLink to={`/swap?inputCurrency=${row.token0}&outputCurrency=${row.token1}`} style={{ textDecoration: 'none' }}>
 										<span>{t('swap')}</span>

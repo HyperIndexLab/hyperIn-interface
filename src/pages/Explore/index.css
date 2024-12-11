@@ -67,13 +67,43 @@
 }
 .table-cell span {
   margin-right: 20px;
-  color: #3498db;
+  color: #8fbcab;
+}
+
+.table-cell.change {
+  flex: 0;
+  min-width: 100px;
+  text-align: left;
 }
 
 .table-cell.control {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+
+.table-cell.green {
+  color: rgb(64, 182, 107);
+}
+
+.table-cell.red {
+  color: rgb(255, 95, 82);
+}
+.triangle {
+  width: 8px;
+  height: 8px;
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  margin-right: 4px;
+  border-radius: 1px;
+}
+
+.table-cell.red .triangle {
+  background-color: rgb(255, 95, 82);
+  transform: rotate(180deg);
+}
+
+.table-cell.green .triangle {
+  background-color: rgb(64, 182, 107);
 }
 
 @keyframes spin {
