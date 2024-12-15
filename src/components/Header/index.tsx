@@ -133,14 +133,12 @@ const BalanceText = styled(Text)`
 
 type SupportedChainId = 1 | 133
 
-const NETWORK_LABELS: { [chainId in SupportedChainId]: string | null } = {
-  [1]: null,
-  [133]: 'HashKey Sepolia'
-}
+const NETWORK_LABELS: { [chainId in SupportedChainId]: string | null } = {1: null,133: 'HashKey Sepolia'}
 
 const NETWORK_CONFIG: { [chainId in SupportedChainId]: { logo: string } } = {
-  [1]: { logo: '' }, // 主网不显示logo
-  [133]: { logo: hskLogo } // HashKey 测试网显示logo
+  1: { logo: '' }, // 主网不显示logo
+  133: { logo: hskLogo } // HashKey 测试网显示logo
+
 }
 const activeClassName = 'ACTIVE'
 
