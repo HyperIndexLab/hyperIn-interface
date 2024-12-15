@@ -5,8 +5,7 @@ import fetchWrapper from '../../utils/fetch';
 import { NavLink } from 'react-router-dom'
 import Loader from '../../components/Loader'
 // import { ethers } from 'ethers';
-// import uniswapV2PairAbi from '../../constants/abis/uniswapV2Pair.json';
-
+// import stablePool2Abi from '../../constants/abis/stablePool2.json';
 
 export const formatNumber = (
   value: number | string,
@@ -159,44 +158,43 @@ export default function Explore() {
     }));
   };
 
-	// useEffect(() => {
-	// 	const provider = new ethers.providers.JsonRpcProvider('https://hashkeychain-testnet.alt.technology');
+	// async function fetchPoolTokens(pool: any) {
+	// 	try {
+	// 		const token0 = await pool.tokens(0);
+	// 		// const token1 = await pool.tokens(1);
+	// 		// const token2 = await pool.tokens(2);
+	// 		console.log('Token0:', token0);
+	// 		// console.log('Token1:', token1);
+	// 		// console.log('Token2:', token2);
+	// 	} catch (error) {
+	// 		console.error('Error fetching tokens:', error);
+	// 	}
+	// }
 
-		
-	// 	const contractAddress = "0xCDF5BbeBcFaf0f0A05aB8D9B73DB1468a64652c3"; 
-	// 	const contractAbi = uniswapV2PairAbi
+	// useEffect( () => {
+	// 	const initContract = async () => {
+  //     const POOL_ADDRESS = '0xB12db72cd9Df2897d07B86A0F32de2045e79C38f';
+	// 		const POOL_ABI = stablePool2Abi;
+	// 		// 使用 Web3Provider 连接到浏览器钱包（MetaMask）
+  //     const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+      
+  //     // 使用自定义的 RPC 连接
+  //     new ethers.providers.JsonRpcProvider('https://hashkeychain-testnet.alt.technology');
+      
+  //     // 请求用户的账户连接
+  //     await (window.ethereum as any).request({ method: 'eth_requestAccounts' });
 
-	// 	const contract = new ethers.Contract(contractAddress, contractAbi, provider);
+  //     // 使用 MetaMask 的 signer 来与合约交互
+  //     const signer = provider.getSigner();
+	// 		console.log(provider, 'provider====')
+	// 		console.log(signer, 'signer====')	
+	// 		const pool = new ethers.Contract(POOL_ADDRESS, POOL_ABI, signer);
+	// 		console.log(pool, 'pool====')
+	// 		fetchPoolTokens(pool)
+  //   };
 
-	// 	const getSwapEvents = async (fromBlock: number, toBlock: string) => {
-	// 		try {
-	// 			console.log('Swap Event: fromBlock', fromBlock, toBlock);
-			
-	// 			const events = await contract.queryFilter(
-	// 				contract, 
-	// 				fromBlock, 
-	// 				toBlock
-	// 			);
-
-	// 			console.log('Swap Event: events',contract.filters, events);
-
-	// 			events.forEach((event) => {
-	// 				console.log('Swap Event:');
-	// 				console.log(`Sender: ${event.args?.sender}`);
-	// 				console.log(`Amount0In: ${event.args?.amount0In.toString()}`);
-	// 				console.log(`Amount1In: ${event.args?.amount1In.toString()}`);
-	// 				console.log(`Amount0Out: ${event.args?.amount0Out.toString()}`);
-	// 				console.log(`Amount1Out: ${event.args?.amount1Out.toString()}`);
-	// 				console.log(`To: ${event.args?.to}`);
-	// 			});
-	// 		} catch (error) {
-	// 			console.error('Error fetching events:', error);
-	// 		}
-	// 	};
-
-	// 	getSwapEvents(0, "latest");
-		
-	// }, [tokenData, poolData])
+  //   initContract();
+	// }, [])
 
   return (
 		<div className="table-container">
