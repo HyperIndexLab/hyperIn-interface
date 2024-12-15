@@ -4,7 +4,7 @@ import { isMobile } from 'react-device-detect'
 import { Text } from 'rebass'
 
 import styled from 'styled-components'
-
+import { darken } from 'polished'
 // import Logo from '../../assets/svg/logo.svg'
 // import LogoDark from '../../assets/svg/logo_white.svg'
 import Wordmark from '../../assets/images/logo.png'
@@ -17,9 +17,10 @@ import hskLogo from '../../assets/images/hsk-logo.png'
 import { YellowCard } from '../Card'
 import Settings from '../Settings'
 // import Menu from '../Menu'
-
+import { NavLink } from 'react-router-dom'
 import Row, { RowBetween } from '../Row'
 import Web3Status from '../Web3Status'
+import { useTranslation } from 'react-i18next'
 // import VersionSwitch from './VersionSwitch'
 
 const HeaderFrame = styled.div`
@@ -139,13 +140,43 @@ const NETWORK_CONFIG: { [chainId in SupportedChainId]: { logo: string } } = {
   133: { logo: hskLogo } // HashKey 测试网显示logo
 
 }
+const activeClassName = 'ACTIVE'
+
+const StyledNavLink = styled(NavLink).attrs({
+  activeClassName
+})`
+  ${({ theme }) => theme.flexRowNoWrap}
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  margin-left: 30px;
+  margin-top: 10px;
+  border-radius: 3rem;
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: ${({ theme }) => theme.text3};
+  font-size: 20px;
+
+  &.${activeClassName} {
+    border-radius: 12px;
+    font-weight: 500;
+    color: ${({ theme }) => theme.text1};
+  }
+
+  :hover,
+  :focus {
+    color: ${({ theme }) => darken(0.1, theme.text1)};
+  }
+`
 
 export default function Header() {
   const { account, chainId } = useActiveWeb3React()
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const [isDark] = useDarkModeManager()
-
+  const { t } = useTranslation()
+  
   return (
     <HeaderFrame>
       <RowBetween style={{ alignItems: 'center' }} padding="1rem 1rem 0 1rem">
@@ -162,6 +193,12 @@ export default function Header() {
               />
             </TitleText>
           </Title>
+          <StyledNavLink id={`pool-nav-link`} to={'/swap'} >
+            {t('trade')}
+          </StyledNavLink>
+          <StyledNavLink id={`pool-nav-link`} to={'/explore'} >
+            {t('explore')}
+          </StyledNavLink>
         </HeaderElement>
         <HeaderControls>
           <HeaderElement>

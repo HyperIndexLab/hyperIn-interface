@@ -71,5 +71,17 @@
   "tokenAddress": "通证地址",
   "label": "通证符号",
   "decimals": "小数位数",
-  "enterTokenCont": "输入通证地址并继续"
+  "enterTokenCont": "输入通证地址并继续",
+  "trade": "交易",
+  "explore": "探索",
+  "token": "代币",
+  "tvl": "TVL",
+  "apy": "年化利率",
+  "vol1d": "1天交易量",
+  "vol30d": "30天交易量",
+  "price": "价格",
+  "1h": "1小时",
+  "1d": "1天",
+  "tokenName": "代币名称",
+  "tradeVolume": "交易量"
 }

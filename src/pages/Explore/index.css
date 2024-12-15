@@ -1,0 +1,211 @@
+/* 主容器样式 */
+.table-container {
+  width: 80%; /* 适应屏幕宽度 */
+  overflow-x: auto; /* 允许横向滚动 */
+  margin: auto;
+  margin-top: -50px;
+  border-radius: 10px;
+  -webkit-overflow-scrolling: touch; /* 提升移动端滚动体验 */
+}
+
+/* 搜索框样式 */
+.search-box {
+  display: block;
+  margin: 10px auto;
+  padding: 8px;
+  width: 90%; /* 调整为相对宽度 */
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+/* 表格样式 */
+.table {
+  min-width: 800px; /* 保持表格宽度大于移动设备屏幕宽度 */
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* 表格行样式 */
+.table-row {
+  display: flex;
+}
+
+.table-row.header {
+  background-color: #1b1b1b;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* 表格单元格样式 */
+.table-cell {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  color: #ddd;
+  display: flex;
+  align-items: center;
+  height: 64px;
+}
+.table-cell:last-child.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: auto;
+}
+.loader-text {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+.table-cell span {
+  margin-right: 20px;
+  color: #8fbcab;
+}
+
+.table-cell.change {
+  flex: 0;
+  min-width: 100px;
+  text-align: left;
+}
+
+.table-cell.control {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.table-cell.green {
+  color: rgb(64, 182, 107);
+}
+
+.table-cell.red {
+  color: rgb(255, 95, 82);
+}
+.triangle {
+  width: 8px;
+  height: 8px;
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  margin-right: 4px;
+  border-radius: 1px;
+}
+
+.table-cell.red .triangle {
+  background-color: rgb(255, 95, 82);
+  transform: rotate(180deg);
+}
+
+.table-cell.green .triangle {
+  background-color: rgb(64, 182, 107);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.table-cell:first-child {
+  flex: 0;
+  width: 100px;
+  text-align: left;
+}
+
+.table-cell:last-child {
+  text-align: right;
+}
+
+.table-row.body:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* 调整表格行内边距 */
+.table-row {
+  padding: 0 10px;
+}
+
+/* 标签容器样式 */
+.tab-container {
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+/* 标签组样式 */
+.tabs {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.tab:first-child {
+  margin-left: -20px;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  text-align: center;
+  color: rgb(155, 155, 155);
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.tab.active {
+  color: #fff;
+}
+
+/* 标签内容 */
+.tab-content {
+  padding: 20px;
+  background: #1b1b1b;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  color: #ddd;
+}
+
+.tab-pane {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* 动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 响应式样式 */
+@media (max-width: 800px) {
+  .table-container {
+    width: 300%; /* 适应屏幕宽度 */
+    margin-top: 0px;
+  }
+  .table {
+    min-width: 100%; /* 表格适配移动端 */
+  }
+
+  .table-cell {
+    font-size: 14px; /* 调整文字大小 */
+    padding: 8px; /* 减少单元格内边距 */
+  }
+
+  .search-box {
+    width: 95%;
+  }
+
+  .tab {
+    font-size: 16px;
+  }
+}
