@@ -247,7 +247,6 @@ function validatedRecipient(recipient: any): string | null {
 }
 
 export function queryParametersToSwapState(parsedQs: ParsedQs): SwapState {
-  console.log(parsedQs, "parsedQs===222")
   let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency)
   let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency)
   if (inputCurrency === outputCurrency) {
@@ -288,7 +287,6 @@ export function useDefaultsFromURLSearch():
     if (!chainId) return
     const parsed = queryParametersToSwapState(parsedQs)
 
-    console.log(parsedQs, "parsed===")
     dispatch(
       replaceSwapState({
         typedValue: parsed.typedValue,
