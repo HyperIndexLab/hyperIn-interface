@@ -254,7 +254,7 @@ export default function Swap() {
           txHash: undefined
         })
       })
-  }, [priceImpactWithoutFee, confirmPriceImpact, swapCallback, tradeToConfirm])
+  }, [priceImpactWithoutFee, confirmPriceImpact, swapCallback, tradeToConfirm,account,recipient,recipientAddress,trade])
 
   // Add handler for price impact confirmation
   const handlePriceImpactConfirm = useCallback(() => {
