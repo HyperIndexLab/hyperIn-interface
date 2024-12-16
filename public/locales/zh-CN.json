@@ -83,5 +83,6 @@
   "1h": "1小时",
   "1d": "1天",
   "tokenName": "代币名称",
-  "tradeVolume": "交易量"
+  "tradeVolume": "交易量",
+  "news":"新闻"
 }

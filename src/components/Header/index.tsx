@@ -176,6 +176,9 @@ export default function Header() {
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const [isDark] = useDarkModeManager()
   const { t } = useTranslation()
+  const handleToNews=()=>{
+    window.open('https://news.hyperindex.trade', '_blank')
+  }
   
   return (
     <HeaderFrame>
@@ -198,6 +201,9 @@ export default function Header() {
           </StyledNavLink>
           <StyledNavLink id={`pool-nav-link`} to={'/explore'} >
             {t('explore')}
+          </StyledNavLink>
+          <StyledNavLink onClick={()=>handleToNews()} id={`pool-nav-link`} to={'/news'} >
+            {t('news')}
           </StyledNavLink>
         </HeaderElement>
         <HeaderControls>
