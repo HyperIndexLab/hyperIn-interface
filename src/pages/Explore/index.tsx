@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import fetchWrapper from '../../utils/fetch';
 import { NavLink } from 'react-router-dom'
 import Loader from '../../components/Loader'
+import { useIsDarkMode } from '../../state/user/hooks';
 // import { ethers } from 'ethers';
 // import stablePool2Abi from '../../constants/abis/stablePool2.json';
 
@@ -23,6 +24,8 @@ export const formatNumber = (
 export default function Explore() {
   // const theme = useContext(ThemeContext)
   // const { account } = useActiveWeb3React()
+	const darkMode = useIsDarkMode()
+	
 	const [activeTab, setActiveTab] = useState(1);
 	const [tableTitleData, setTableTitleData]: any = useState([])
 	const [loading, setLoading] = useState(true)
@@ -197,7 +200,7 @@ export default function Explore() {
 	// }, [])
 
   return (
-		<div className="table-container">
+		<div className={`table-container ${darkMode ? 'darkMode' : 'whiteMode'}`}>
 			<div className="tabs">
 				{tabs.map((tab) => (
 					<div
