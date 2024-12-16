@@ -83,11 +83,11 @@
 }
 
 .table-cell.green {
-  color: rgb(64, 182, 107);
+  color: rgb(64, 182, 107) !important;
 }
 
 .table-cell.red {
-  color: rgb(255, 95, 82);
+  color: rgb(255, 95, 82) !important;
 }
 .triangle {
   width: 8px;
@@ -208,4 +208,24 @@
   .tab {
     font-size: 16px;
   }
+}
+
+.whiteMode .table-row.header {
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+}
+.whiteMode .table-row.header .table-cell {
+  color: #7a7d80;
+}
+
+.whiteMode .table-cell {
+  color: #2e3338;
+}
+
+.whiteMode .tab.active {
+  color: #2e3338;
+}
+
+.whiteMode .table-cell.control span {
+  color: rgb(94, 139, 126);
 }
