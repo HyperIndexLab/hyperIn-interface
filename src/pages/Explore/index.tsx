@@ -91,7 +91,7 @@ export default function Explore() {
 		},
 		{
 			label: '',
-			value: ""
+			value: "control"
 		},
 		],
 	}
@@ -218,7 +218,7 @@ export default function Explore() {
 				{/* 表头 */}
 				<div className="table-row header">
 					{tableTitleData.map((item: any) => (
-						<div className={`table-cell ${item.value === 'change1H' || item.value === 'change24H' ? 'change' : ''}`} onClick={() => handleSort(item.value)} key={item.value}>
+						<div className={`table-cell ${item.value === 'change1H' || item.value === 'change24H' ? 'change' : ''} ${item.value === 'control' ? 'control' : ''}`} onClick={() => handleSort(item.value)} key={item.value}>
 							{item.label}
 						</div>
 					))}
