@@ -23,7 +23,7 @@ export default function ListIntroduction({ onSelectList }: { onSelectList: () =>
             alt="token-list-preview"
           />
           <img
-            style={{ width: '100%', borderRadius: '12px' }}
+            style={{ width: '40%', borderRadius: '12px', margin: '0 auto', marginBottom: '14px' }}
             src="https://hyper-index-dex.4everland.store/logo.png"
             alt="token-list-preview"
           />
