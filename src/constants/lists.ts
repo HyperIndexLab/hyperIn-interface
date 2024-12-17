@@ -1,6 +1,6 @@
 // the Uniswap Default token list lives here
 export const DEFAULT_TOKEN_LIST_URL =
-  'https://raw.githubusercontent.com/HyperIndexLab/tokenlist/refs/heads/main/tokenlist.json'
+  'https://explorer.hsk.xyz/api/v2/tokens'
 
 export const DEFAULT_LIST_OF_LISTS: string[] = [
   DEFAULT_TOKEN_LIST_URL

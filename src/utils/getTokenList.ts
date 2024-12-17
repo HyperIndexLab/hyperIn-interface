@@ -4,6 +4,8 @@ import Ajv from 'ajv'
 import contenthashToUri from './contenthashToUri'
 import { parseENSAddress } from './parseENSAddress'
 import uriToHttp from './uriToHttp'
+import INDEX_DEFAULT_LIST from '../assets/tokenList/tokenListTest.json'
+import { ChainId } from 'hypherin-sdk'
 
 const tokenListValidator = new Ajv({ allErrors: true }).compile(schema)
 
@@ -49,12 +51,28 @@ export default async function getTokenList(
       continue
     }
 
+    
+
     if (!response.ok) {
       if (isLast) throw new Error(`Failed to download list ${listUrl}`)
       continue
     }
 
-    const json = await response.json()
+    let json = await response.json()
+
+    const tokens = json.items.map((item: any) => {
+      return {
+        name: item.name,
+        address: item.address,
+        symbol: item.symbol,
+        decimals: parseInt(item.decimals),
+        chainId: ChainId.HASHKEY_MAINNET,
+        "tags": ["hashkey"],
+        logoURI: "https://in-dex.4everland.store/index.jpg",
+      }
+    })
+    INDEX_DEFAULT_LIST.tokens =  tokens
+    json = INDEX_DEFAULT_LIST
     if (!tokenListValidator(json)) {
       const validationErrors: string =
         tokenListValidator.errors?.reduce<string>((memo, error) => {
