@@ -71,8 +71,9 @@ export default async function getTokenList(
         logoURI: "https://in-dex.4everland.store/index.jpg",
       }
     })
-    INDEX_DEFAULT_LIST.tokens =  tokens
-    json = INDEX_DEFAULT_LIST
+    json = {...INDEX_DEFAULT_LIST, tokens: tokens}
+
+
     if (!tokenListValidator(json)) {
       const validationErrors: string =
         tokenListValidator.errors?.reduce<string>((memo, error) => {
