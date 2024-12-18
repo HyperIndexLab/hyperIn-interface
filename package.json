@@ -4,7 +4,7 @@
   "private": true,
   "devDependencies": {
     "@ethersproject/experimental": "^5.0.1",
-    "hypherin-sdk": "1.0.6",
+    "hypherin-sdk": "1.0.7",
     "@popperjs/core": "^2.4.4",
     "@reach/dialog": "^0.10.3",
     "@reach/portal": "^0.10.3",
