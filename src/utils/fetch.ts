@@ -4,15 +4,16 @@ interface FetchOptions {
   body?: any; 
   queryParams?: Record<string, string | number>;
   timeout?: number; 
+  useMock?: boolean;
 }
 
 export default async function fetchWrapper(
 	url: string,
-  options: FetchOptions = {}
+  options: FetchOptions = {},
 ): Promise<any> {
 	const { method = 'GET', headers, body, queryParams, timeout = 10000 } = options;
   
-  let fullUrl = 'https://api.hyperindex.trade' + url;
+  let fullUrl = options.useMock ? url : 'https://api.hyperindex.trade' + url;
   if (queryParams) {
     const params = new URLSearchParams(queryParams as any).toString();
     fullUrl += `?${params}`;

@@ -1,0 +1,52 @@
+.active-task-modal {
+  width: 100%;
+  padding: 0 20px;
+}
+.active-task-modal-title {
+  margin: 0px;
+  margin-bottom: 10px;
+}
+.active-task-modal-description {
+  color: #b0b4b7;
+}
+
+.active-task-modal-step {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  background-color: #1a1d1b;
+  transition: 0.2s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+  border: 1px solid transparent;
+  padding: 24px;
+}
+.active-task-modal-step:hover {
+  border-color: #fff;
+}
+.active-task-modal-step button {
+  background-color: #8fbcab;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+.active-task-modal-flow {
+  margin-bottom: 10px;
+}
+.active-task-modal-step button:disabled {
+  color: #1a1d1b;
+  background-color: #ddd;
+}
+.active-task-modal-step.completed button {
+  background-color: #8fbcab;
+  opacity: 0.5;
+}
+.active-task-modal-step.completed button:hover {
+  opacity: 0.5;
+}
+.active-task-modal-step button:hover {
+  opacity: 0.9;
+}
+.active-task-modal-header {
+  margin-bottom: 40px;
+}
