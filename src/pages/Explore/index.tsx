@@ -37,14 +37,15 @@ export default function Explore() {
   const [, setSortConfig] = useState({ key: "", direction: "" });
 
 	const TABLE_TITLE = {
-		1: [{
-			label: "#",
-			value: "id"
-		},
-		{
-			label: t('tokenName'),
-			value: "name"
-		},
+		1: [
+			{
+				label: "#",
+				value: "id"
+			},
+			{
+				label: t('tokenName'),
+				value: "name"
+			},
 		{
 			label: t('price'),
 			value: "price"
@@ -65,10 +66,11 @@ export default function Explore() {
 			label: t('tradeVolume'),
 			value: "tradeVolume"
 		}],
-		2: [{
-			label: "#",
-			value: "id"
-		},
+		2: [
+			{
+				label: "#",
+				value: "id"
+			},
 		{
 			label: t('pool'),
 			value: "pool"
@@ -114,7 +116,7 @@ export default function Explore() {
 		setLoading(true)
 		try {
 			const tokens = await fetchWrapper('/api/explore/tokens');
-			setTokenData(tokens)
+			setTokenData(tokens);
 		} catch (error) {
 			console.error('Failed to fetch token list:', error);
 		} finally {
@@ -126,18 +128,8 @@ export default function Explore() {
 		setLoading(true)
 		try {
 			const pools = await fetchWrapper('/api/explore/pools');
-			const tokens = await fetchWrapper('/api/explore/tokens');
-
-			pools.map((pool: any) => {
-				const pairs = pool.pairsName.split('/')
-				pairs.map((pair: any) => {
-					const token = tokens.find((token: any) => token.symbol === pair)
-					pool.tokenAddress = token.address
-					pool.token0 = token.address
-					pool.token1 = token.address
-				})
-			})
-			setPoolData(pools)
+			
+			setPoolData(pools);
 		} catch (error) {
 			console.error('Failed to fetch pool list:', error);
 		} finally {
@@ -230,7 +222,7 @@ export default function Explore() {
 							<div className="table-row body" key={row.id}>
 								<div className="table-cell">{row.id}</div>
 								<div className="table-cell">{row.name}</div>
-								<div className="table-cell">{formatNumber(row.price, 8)} USDT</div>
+								<div className="table-cell">{row.price} USDT</div>
 								<div className={`table-cell change ${row.change1H >= 0 ? 'green' : 'red'}`}>
 									<div className="triangle"></div>
 									{formatNumber(row.change1H, 2)}%
