@@ -12,8 +12,8 @@ export const formatNumber = (
   value: number | string,
   decimals: number = 2
 ): string => {
-  if (isNaN(Number(value))) {
-    throw new Error('Input value must be a valid number');
+  if (value === 0 || isNaN(Number(value))) {
+    return '0.00';
   }
   const fixedValue = Number(value).toFixed(decimals);
 
