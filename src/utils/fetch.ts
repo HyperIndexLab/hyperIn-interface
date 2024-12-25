@@ -13,7 +13,7 @@ export default async function fetchWrapper(
 	const { method = 'GET', headers, body, queryParams, timeout = 10000 } = options;
   
   let fullUrl = 'https://api.hyperindex.trade' + url;
-  // let fullUrl = 'http://localhost:3001' + url;
+  // let fullUrl = 'http://localhost:3000' + url;
   if (queryParams) {
     const params = new URLSearchParams(queryParams as any).toString();
     fullUrl += `?${params}`;
