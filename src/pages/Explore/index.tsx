@@ -222,7 +222,7 @@ export default function Explore() {
 							<div className="table-row body" key={row.id}>
 								<div className="table-cell">{row.id}</div>
 								<div className="table-cell">{row.name}</div>
-								<div className="table-cell">{row.price} USDT</div>
+								<div className="table-cell">{row.price} USD</div>
 								<div className={`table-cell change ${row.change1H >= 0 ? 'green' : 'red'}`}>
 									<div className="triangle"></div>
 									{formatNumber(row.change1H, 2)}%
@@ -231,8 +231,8 @@ export default function Explore() {
 									<div className="triangle"></div>
 									{formatNumber(row.change24H, 2)}%
 								</div>
-								<div className="table-cell">{formatNumber(row.FDV, 2)} USDT</div>
-								<div className="table-cell">{formatNumber(row.tradingVolume, 2)} USDT</div>
+								<div className="table-cell">{row.FDV} USD</div>
+								<div className="table-cell">{formatNumber(row.tradingVolume, 2)} USD</div>
 							</div>
 						</NavLink>
 					)
@@ -243,10 +243,10 @@ export default function Explore() {
 							<div className="table-row body" key={row.id}>
 								<div className="table-cell">{row.id}</div>
 								<div className="table-cell">{row.pairsName}</div>
-								<div className="table-cell">{formatNumber(row.TVL, 1)} USDT</div>
+								<div className="table-cell">{row.TVL} USD</div>
 								<div className="table-cell">{formatNumber(row.APY, 3)}%</div>
-								<div className="table-cell">{formatNumber(row.tradingVolume1D, 2)} USDT</div>
-								<div className="table-cell">{formatNumber(row.tradingVolume30D, 2)} USDT</div>
+								<div className="table-cell">{formatNumber(row.tradingVolume1D, 2)} USD</div>
+								<div className="table-cell">{formatNumber(row.tradingVolume30D, 2)} USD</div>
 								<div className="table-cell control">
 									<NavLink to={`/swap?inputCurrency=${row.token0}&outputCurrency=${row.token1}`} style={{ textDecoration: 'none' }}>
 										<span>{t('swap')}</span>
