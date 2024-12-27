@@ -205,6 +205,9 @@ export default function Header() {
           <StyledNavLink onClick={()=>handleToNews()} id={`pool-nav-link`} to={'/news'} >
             {t('news')}
           </StyledNavLink>
+          <StyledNavLink id={`pool-nav-link`} to={'/activity'} >
+            {t('gift')}
+          </StyledNavLink>
         </HeaderElement>
         <HeaderControls>
           <HeaderElement>

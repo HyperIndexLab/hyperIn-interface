@@ -12,8 +12,8 @@ export const formatNumber = (
   value: number | string,
   decimals: number = 2
 ): string => {
-  if (isNaN(Number(value))) {
-    throw new Error('Input value must be a valid number');
+  if (value === 0 || isNaN(Number(value))) {
+    return '0.00';
   }
   const fixedValue = Number(value).toFixed(decimals);
 
@@ -37,14 +37,15 @@ export default function Explore() {
   const [, setSortConfig] = useState({ key: "", direction: "" });
 
 	const TABLE_TITLE = {
-		1: [{
-			label: "#",
-			value: "id"
-		},
-		{
-			label: t('tokenName'),
-			value: "name"
-		},
+		1: [
+			{
+				label: "#",
+				value: "id"
+			},
+			{
+				label: t('tokenName'),
+				value: "name"
+			},
 		{
 			label: t('price'),
 			value: "price"
@@ -65,10 +66,11 @@ export default function Explore() {
 			label: t('tradeVolume'),
 			value: "tradeVolume"
 		}],
-		2: [{
-			label: "#",
-			value: "id"
-		},
+		2: [
+			{
+				label: "#",
+				value: "id"
+			},
 		{
 			label: t('pool'),
 			value: "pool"
@@ -114,7 +116,7 @@ export default function Explore() {
 		setLoading(true)
 		try {
 			const tokens = await fetchWrapper('/api/explore/tokens');
-			setTokenData(tokens)
+			setTokenData(tokens);
 		} catch (error) {
 			console.error('Failed to fetch token list:', error);
 		} finally {
@@ -126,18 +128,8 @@ export default function Explore() {
 		setLoading(true)
 		try {
 			const pools = await fetchWrapper('/api/explore/pools');
-			const tokens = await fetchWrapper('/api/explore/tokens');
-
-			pools.map((pool: any) => {
-				const pairs = pool.pairsName.split('/')
-				pairs.map((pair: any) => {
-					const token = tokens.find((token: any) => token.symbol === pair)
-					pool.tokenAddress = token.address
-					pool.token0 = token.address
-					pool.token1 = token.address
-				})
-			})
-			setPoolData(pools)
+			
+			setPoolData(pools);
 		} catch (error) {
 			console.error('Failed to fetch pool list:', error);
 		} finally {
@@ -230,7 +222,7 @@ export default function Explore() {
 							<div className="table-row body" key={row.id}>
 								<div className="table-cell">{row.id}</div>
 								<div className="table-cell">{row.name}</div>
-								<div className="table-cell">{formatNumber(row.price, 8)} USDT</div>
+								<div className="table-cell">{row.price} USD</div>
 								<div className={`table-cell change ${row.change1H >= 0 ? 'green' : 'red'}`}>
 									<div className="triangle"></div>
 									{formatNumber(row.change1H, 2)}%
@@ -239,8 +231,8 @@ export default function Explore() {
 									<div className="triangle"></div>
 									{formatNumber(row.change24H, 2)}%
 								</div>
-								<div className="table-cell">{formatNumber(row.FDV, 2)} USDT</div>
-								<div className="table-cell">{formatNumber(row.tradingVolume, 2)} USDT</div>
+								<div className="table-cell">{row.FDV} USD</div>
+								<div className="table-cell">{formatNumber(row.tradingVolume, 2)} USD</div>
 							</div>
 						</NavLink>
 					)
@@ -251,10 +243,10 @@ export default function Explore() {
 							<div className="table-row body" key={row.id}>
 								<div className="table-cell">{row.id}</div>
 								<div className="table-cell">{row.pairsName}</div>
-								<div className="table-cell">{formatNumber(row.TVL, 1)} USDT</div>
+								<div className="table-cell">{row.TVL} USD</div>
 								<div className="table-cell">{formatNumber(row.APY, 3)}%</div>
-								<div className="table-cell">{formatNumber(row.tradingVolume1D, 2)} USDT</div>
-								<div className="table-cell">{formatNumber(row.tradingVolume30D, 2)} USDT</div>
+								<div className="table-cell">{formatNumber(row.tradingVolume1D, 2)} USD</div>
+								<div className="table-cell">{formatNumber(row.tradingVolume30D, 2)} USD</div>
 								<div className="table-cell control">
 									<NavLink to={`/swap?inputCurrency=${row.token0}&outputCurrency=${row.token1}`} style={{ textDecoration: 'none' }}>
 										<span>{t('swap')}</span>

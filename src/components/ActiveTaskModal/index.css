@@ -50,3 +50,9 @@
 .active-task-modal-header {
   margin-bottom: 40px;
 }
+
+.active-task-modal-step button.done-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

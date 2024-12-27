@@ -8141,10 +8141,10 @@ human-signals@^1.1.1:
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-1.1.1.tgz#c5b1cd14f50aeae09ab6c59fe63ba3395fe4dfa3"
   integrity sha512-SEQu7vl8KjNL2eoGBLF3+wAjpsNfA9XMlXAYj/3EdaNfAlxKthD1xjEQfGOUhllCGGJVNY34bRr6lPINhNjyZw==
 
-hypherin-sdk@1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/hypherin-sdk/-/hypherin-sdk-1.0.6.tgz#50810e3bae3679973d243854298ca43a911025d6"
-  integrity sha512-U4kZx+3Jrl4PPsWomcYUdGyrek6jH3rGlKx/yB1qez2N4CJoJDRjhvlNH/+qX8YTKfh4oryWoJRXzc++bt8SGA==
+hypherin-sdk@1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/hypherin-sdk/-/hypherin-sdk-1.0.7.tgz#030f9fac273d50c75fd5a5606c56b3ece62f7c46"
+  integrity sha512-zg8lONlgKcT+p9H6qOi9PMKRamenp/6BP2NzcQ71t4CPrwzqS+Q8wzZb9oF8/jPzoAcScbuUuuidptfpD0fU1g==
   dependencies:
     "@uniswap/v2-core" "1.0.0"
     big.js "5.2.2"
