@@ -102,18 +102,6 @@ const NetworkCard = styled(YellowCard)`
   justify-content: center;
 `
 
-// const UniIcon = styled.div`
-//   transition: transform 0.3s ease;
-//   :hover {
-//     transform: rotate(-5deg);
-//   }
-//   ${({ theme }) => theme.mediaWidth.upToSmall`
-//     img {
-//       width: 4.5rem;
-//     }
-//   `};
-// `
-
 const HeaderControls = styled.div`
   display: flex;
   flex-direction: row;
@@ -133,11 +121,12 @@ const BalanceText = styled(Text)`
 
 type SupportedChainId = 1 | 133
 
-const NETWORK_LABELS: { [chainId in SupportedChainId]: string | null } = { 1: null, 133: 'HashKey Sepolia' }
+const NETWORK_LABELS: { [chainId in SupportedChainId]: string | null } = {1: null,133: 'HashKey Sepolia'}
 
 const NETWORK_CONFIG: { [chainId in SupportedChainId]: { logo: string } } = {
   1: { logo: '' }, // 主网不显示logo
   133: { logo: hskLogo } // HashKey 测试网显示logo
+
 }
 const activeClassName = 'ACTIVE'
 
@@ -147,15 +136,15 @@ const StyledNavLink = styled(NavLink).attrs({
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
   justify-content: center;
-  height: 3rem;
-  margin-left: 30px;
-  margin-top: 10px;
-  border-radius: 3rem;
+  height: 2.5rem;
+  margin-left: 20px;
+  margin-top: 8px;
+  border-radius: 2rem;
   outline: none;
   cursor: pointer;
   text-decoration: none;
   color: ${({ theme }) => theme.text3};
-  font-size: 20px;
+  font-size: 16px;
 
   &.${activeClassName} {
     border-radius: 12px;
@@ -175,36 +164,33 @@ export default function Header() {
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const [isDark] = useDarkModeManager()
   const { t } = useTranslation()
-  const handleToNews = () => {
+  const handleToNews=()=>{
     window.open('https://news.hyperindex.trade', '_blank')
   }
-
+  
   return (
     <HeaderFrame>
       <RowBetween style={{ alignItems: 'center' }} padding="1rem 1rem 0 1rem">
         <HeaderElement>
           <Title href=".">
-            {/* <UniIcon>
-              <img src={isDark ? LogoDark : Logo} alt="logo" />
-            </UniIcon> */}
             <TitleText>
               <img
-                style={{ width: '66px', height: '28px', marginLeft: '4px', marginTop: '4px' }}
+                style={{ width: '60px', height: '24px', marginLeft: '4px', marginTop: '4px' }}
                 src={isDark ? WordmarkDark : Wordmark}
                 alt="logo"
               />
             </TitleText>
           </Title>
-          <StyledNavLink id={`pool-nav-link`} to={'/swap'}>
+          <StyledNavLink id={`pool-nav-link`} to={'/swap'} >
             {t('trade')}
           </StyledNavLink>
-          <StyledNavLink id={`pool-nav-link`} to={'/explore'}>
+          <StyledNavLink id={`pool-nav-link`} to={'/explore'} >
             {t('explore')}
           </StyledNavLink>
-          <StyledNavLink onClick={() => handleToNews()} id={`pool-nav-link`} to={'/news'}>
+          <StyledNavLink onClick={()=>handleToNews()} id={`pool-nav-link`} to={'/news'} >
             {t('news')}
           </StyledNavLink>
-          <StyledNavLink id={`pool-nav-link`} to={'/activity'}>
+          <StyledNavLink id={`pool-nav-link`} to={'/activity'} >
             {t('gift')}
           </StyledNavLink>
         </HeaderElement>
@@ -233,9 +219,7 @@ export default function Header() {
             </AccountElement>
           </HeaderElement>
           <HeaderElementWrap>
-            {/* <VersionSwitch /> */}
             <Settings />
-            {/* <Menu /> */}
           </HeaderElementWrap>
         </HeaderControls>
       </RowBetween>
