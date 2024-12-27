@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-// import twitterShare from '../../utils/twitterShare'
 import fetchWrapper from '../../utils/fetch'
 import { useWeb3React } from '@web3-react/core'
-import TransactionPopup from '../../components/Popups/TransactionPopup';
-import './index.css'
+import TransactionPopup from '../../components/Popups/TransactionPopup'
+import styled from 'styled-components'
+
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 interface IStatus {
   is_bridge: boolean
   is_tweet: boolean
@@ -12,113 +13,138 @@ interface IStatus {
   txHash?: string
 }
 
-export default function ActiveTaskModal() {
-  const { account } = useWeb3React() // 获取 account 状态
-  const [showPopup, setShowPopup] = useState(false) // 新增状态以控制弹出框显示
+const TaskModal = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px;
+  background-color: ${({ theme }) => theme.bg1};
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  margin-bottom: 20px;
+`
 
+const TaskStep = styled.div<{ disabled?: boolean }>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 20px;
+  background-color: ${({ theme, disabled }) => (disabled ? theme.bg3 : theme.bg2)};
+  border-radius: 12px;
+  box-shadow: ${({ disabled }) => (disabled ? 'none' : '0 2px 6px rgba(0, 0, 0, 0.1)')};
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
+`
+
+const CheckBox = styled.div<{ completed: boolean }>`
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background-color: ${({ completed, theme }) => (completed ? theme.primary1 : theme.bg4)};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+`
+
+const StyledButton = styled.button`
+  background-color: ${({ theme }) => theme.primary1};
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background-color: ${({ theme }) => theme.primary2};
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    background-color: ${({ theme }) => theme.bg3};
+    cursor: not-allowed;
+  }
+`
+
+export default function ActiveTaskModal() {
+  const { account } = useWeb3React()
+  const [showPopup, setShowPopup] = useState(false)
   const [status, setStatus] = useState<IStatus | null>(null)
   const [isClaiming, setIsClaiming] = useState(false)
+
   useEffect(() => {
     if (!account) return
     fetchWrapper(`/api/gift/status/${account}`).then(res => {
       setStatus(res.data)
     })
-  }, [])
+  }, [account])
+
   const handleClaim = () => {
     setIsClaiming(true)
     fetchWrapper(`/api/gift/claim/${account}`).then(res => {
       setStatus(res.data)
       setIsClaiming(false)
-      if (res.data.is_claim_success) { // 检查是否成功
+      if (res.message.data.is_claim_success) {
+        // 检查是否成功
         setShowPopup(true) // 显示弹出框
       }
     })
   }
 
-  const handleGotoBridge = () => {
-    window.open('https://www.orbiter.finance/en?src_chain=42161&tgt_chain=177&src_token=ETH', '_blank')
+  const handleGotoBridge = (url: string) => {
+    window.open(url, '_blank')
   }
 
   if (!account) {
     return (
-      <div className="active-task-modal" style={{ display: 'flex', flexDirection: 'column' }}>
-        <div className="active-task-modal-header">
-          <h2 className="active-task-modal-title">Complete the task and earn HSK tokens! 🎉</h2>
-          <div className="active-task-modal-description">Please connect your wallet first</div>
-        </div>
-      </div>
+      <TaskModal>
+        <h2>Complete the task and earn HSK tokens! 🎉</h2>
+        <div>Please connect your wallet first</div>
+      </TaskModal>
     )
   }
 
   return (
-    <div className="active-task-modal" style={{ display: 'flex', flexDirection: 'column' }}>
-      <div className="active-task-modal-header">
-        <h2 className="active-task-modal-title">Complete the task and earn HSK tokens! 🎉</h2>
-        <div className="active-task-modal-description">
-          users need to first connect via the Bridge platform, then claim their HSK tokens.
-        </div>
-      </div>
-      <div className="active-task-modal-flow">Task Flow</div>
-      <div className={`active-task-modal-step ${status?.is_bridge ? 'completed' : ''}`} id="step-1">
+    <TaskModal>
+      <h2>Complete the task and earn HSK tokens! 🎉</h2>
+      <div>users need to first connect via the Bridge platform, then claim their HSK tokens.</div>
+      <h3>Task Flow</h3>
+      <TaskStep>
         <span>Task 1:Bridge</span>
         {status?.is_bridge ? (
-          <button className="active-task-modal-step-button done-button">
-            Done{' '}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M21.801 10A10 10 0 1 1 17 3.335" />
-              <path d="m9 11 3 3L22 4" />
-            </svg>
-          </button>
+          <CheckBox completed>✓</CheckBox>
         ) : (
-          <button onClick={handleGotoBridge} className="active-task-modal-step-button">
-            Go to Bridge
-          </button>
+          <>
+            <StyledButton
+              onClick={() =>
+                handleGotoBridge('https://www.orbiter.finance/en?src_chain=42161&tgt_chain=177&src_token=ETH')
+              }
+            >
+              Go to Orbiter
+            </StyledButton>
+            <StyledButton onClick={() => handleGotoBridge('https://owlto.finance/')}>Go to Owlto</StyledButton>
+          </>
         )}
-      </div>
+      </TaskStep>
 
-      <div className={`active-task-modal-step ${status?.is_claim_success ? 'completed' : ''}`}>
+      <TaskStep disabled={!status?.is_bridge}>
         <span>Task 2:Get Rewarded</span>
         {status?.is_claim_success ? (
-          <button className="active-task-modal-step-button done-button">
-            Claimed{' '}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M21.801 10A10 10 0 1 1 17 3.335" />
-              <path d="m9 11 3 3L22 4" />
-            </svg>
-          </button>
+          <CheckBox completed>✓</CheckBox>
         ) : (
-          <button onClick={handleClaim} disabled={isClaiming} className="active-task-modal-step-button">
+          <StyledButton onClick={handleClaim} disabled={isClaiming}>
             {isClaiming ? 'Claiming...' : 'Claim'}
-          </button>
+          </StyledButton>
         )}
-        
-
- 
-      </div>
-      <div>
-        {showPopup &&status?.txHash && <TransactionPopup summary='Claimed Successfully 🎉' hash={status.txHash} success={status?.is_claim_success} />}
-      </div>
-      
-    </div>
+      </TaskStep>
+      {showPopup && status?.txHash && (
+        <TransactionPopup summary="Claimed Successfully 🎉" hash={status.txHash} success={status?.is_claim_success} />
+      )}
+    </TaskModal>
   )
 }

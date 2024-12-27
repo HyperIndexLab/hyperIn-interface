@@ -102,18 +102,6 @@ const NetworkCard = styled(YellowCard)`
   justify-content: center;
 `
 
-// const UniIcon = styled.div`
-//   transition: transform 0.3s ease;
-//   :hover {
-//     transform: rotate(-5deg);
-//   }
-//   ${({ theme }) => theme.mediaWidth.upToSmall`
-//     img {
-//       width: 4.5rem;
-//     }
-//   `};
-// `
-
 const HeaderControls = styled.div`
   display: flex;
   flex-direction: row;
@@ -148,15 +136,15 @@ const StyledNavLink = styled(NavLink).attrs({
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
   justify-content: center;
-  height: 3rem;
-  margin-left: 30px;
-  margin-top: 10px;
-  border-radius: 3rem;
+  height: 2.5rem;
+  margin-left: 20px;
+  margin-top: 8px;
+  border-radius: 2rem;
   outline: none;
   cursor: pointer;
   text-decoration: none;
   color: ${({ theme }) => theme.text3};
-  font-size: 20px;
+  font-size: 16px;
 
   &.${activeClassName} {
     border-radius: 12px;
@@ -185,12 +173,9 @@ export default function Header() {
       <RowBetween style={{ alignItems: 'center' }} padding="1rem 1rem 0 1rem">
         <HeaderElement>
           <Title href=".">
-            {/* <UniIcon>
-              <img src={isDark ? LogoDark : Logo} alt="logo" />
-            </UniIcon> */}
             <TitleText>
               <img
-                style={{ width: '66px', height: '28px', marginLeft: '4px', marginTop: '4px' }}
+                style={{ width: '60px', height: '24px', marginLeft: '4px', marginTop: '4px' }}
                 src={isDark ? WordmarkDark : Wordmark}
                 alt="logo"
               />
@@ -234,9 +219,7 @@ export default function Header() {
             </AccountElement>
           </HeaderElement>
           <HeaderElementWrap>
-            {/* <VersionSwitch /> */}
             <Settings />
-            {/* <Menu /> */}
           </HeaderElementWrap>
         </HeaderControls>
       </RowBetween>
