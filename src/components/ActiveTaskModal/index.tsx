@@ -89,14 +89,15 @@ export default function ActiveTaskModal() {
     fetchWrapper(`/api/gift/claim/${account}`).then(res => {
       setStatus(res.data)
       setIsClaiming(false)
-      if (res.data.is_claim_success) {
-        setShowPopup(true)
+      if (res.message.data.is_claim_success) {
+        // 检查是否成功
+        setShowPopup(true) // 显示弹出框
       }
     })
   }
 
-  const handleGotoBridge = () => {
-    window.open('https://www.orbiter.finance/en?src_chain=42161&tgt_chain=177&src_token=ETH', '_blank')
+  const handleGotoBridge = (url: string) => {
+    window.open(url, '_blank')
   }
 
   if (!account) {
@@ -118,7 +119,16 @@ export default function ActiveTaskModal() {
         {status?.is_bridge ? (
           <CheckBox completed>✓</CheckBox>
         ) : (
-          <StyledButton onClick={handleGotoBridge}>Go to Bridge</StyledButton>
+          <>
+            <StyledButton
+              onClick={() =>
+                handleGotoBridge('https://www.orbiter.finance/en?src_chain=42161&tgt_chain=177&src_token=ETH')
+              }
+            >
+              Go to Orbiter
+            </StyledButton>
+            <StyledButton onClick={() => handleGotoBridge('https://owlto.finance/')}>Go to Owlto</StyledButton>
+          </>
         )}
       </TaskStep>
 
