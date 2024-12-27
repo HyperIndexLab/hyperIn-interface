@@ -133,12 +133,11 @@ const BalanceText = styled(Text)`
 
 type SupportedChainId = 1 | 133
 
-const NETWORK_LABELS: { [chainId in SupportedChainId]: string | null } = {1: null,133: 'HashKey Sepolia'}
+const NETWORK_LABELS: { [chainId in SupportedChainId]: string | null } = { 1: null, 133: 'HashKey Sepolia' }
 
 const NETWORK_CONFIG: { [chainId in SupportedChainId]: { logo: string } } = {
   1: { logo: '' }, // 主网不显示logo
   133: { logo: hskLogo } // HashKey 测试网显示logo
-
 }
 const activeClassName = 'ACTIVE'
 
@@ -176,10 +175,10 @@ export default function Header() {
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const [isDark] = useDarkModeManager()
   const { t } = useTranslation()
-  const handleToNews=()=>{
+  const handleToNews = () => {
     window.open('https://news.hyperindex.trade', '_blank')
   }
-  
+
   return (
     <HeaderFrame>
       <RowBetween style={{ alignItems: 'center' }} padding="1rem 1rem 0 1rem">
@@ -196,16 +195,16 @@ export default function Header() {
               />
             </TitleText>
           </Title>
-          <StyledNavLink id={`pool-nav-link`} to={'/swap'} >
+          <StyledNavLink id={`pool-nav-link`} to={'/swap'}>
             {t('trade')}
           </StyledNavLink>
-          <StyledNavLink id={`pool-nav-link`} to={'/explore'} >
+          <StyledNavLink id={`pool-nav-link`} to={'/explore'}>
             {t('explore')}
           </StyledNavLink>
-          <StyledNavLink onClick={()=>handleToNews()} id={`pool-nav-link`} to={'/news'} >
+          <StyledNavLink onClick={() => handleToNews()} id={`pool-nav-link`} to={'/news'}>
             {t('news')}
           </StyledNavLink>
-          <StyledNavLink id={`pool-nav-link`} to={'/activity'} >
+          <StyledNavLink id={`pool-nav-link`} to={'/activity'}>
             {t('gift')}
           </StyledNavLink>
         </HeaderElement>
