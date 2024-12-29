@@ -9,7 +9,7 @@ import { WrappedTokenInfo } from '../../state/lists/hooks'
 import Logo from '../Logo'
 
 const getTokenLogoURL = (address: string) =>
-  `https://in-dex.4everland.store/index.jpg`
+  `https://in-dex.4everland.store/indexcoin.jpg`
 
 const StyledEthereumLogo = styled.img<{ size: string }>`
   width: ${({ size }) => size};
