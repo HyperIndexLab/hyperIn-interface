@@ -4,17 +4,13 @@ import ReactGA from 'react-ga'
 import { useTranslation } from 'react-i18next'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
-// import { ThemeContext } from 'styled-components'
 import { useActiveWeb3React } from '../../hooks'
 import { useAllTokens, useToken } from '../../hooks/Tokens'
-// import { useSelectedListInfo } from '../../state/lists/hooks'
 import { CloseIcon } from '../../theme'
 import { isAddress } from '../../utils'
-// import Card from '../Card'
 import Column from '../Column'
-// import ListLogo from '../ListLogo'
 import QuestionHelper from '../QuestionHelper'
-import  { RowBetween } from '../Row'
+import { RowBetween } from '../Row'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
 import { filterTokens } from './filtering'
@@ -22,6 +18,7 @@ import SortButton from './SortButton'
 import { useTokenComparator } from './sorting'
 import { PaddedColumn, SearchInput, Separator } from './styleds'
 import AutoSizer from 'react-virtualized-auto-sizer'
+// import { useSelectedTokenList } from '../../state/lists/hooks'
 
 interface CurrencySearchProps {
   isOpen: boolean
@@ -44,12 +41,12 @@ export function CurrencySearch({
 }: CurrencySearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
-  // const theme = useContext(ThemeContext)
 
   const fixedList = useRef<FixedSizeList>()
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false)
   const allTokens = useAllTokens()
+  // const tokenList = useSelectedTokenList()
 
   // if they input an address, use it
   const isAddressSearch = isAddress(searchQuery)
@@ -88,7 +85,6 @@ export function CurrencySearch({
 
     return [
       ...(searchToken ? [searchToken] : []),
-      // sort any exact symbol matches first
       ...sorted.filter(token => token.symbol?.toLowerCase() === symbolMatch[0]),
       ...sorted.filter(token => token.symbol?.toLowerCase() !== symbolMatch[0])
     ]
@@ -102,12 +98,11 @@ export function CurrencySearch({
     [onDismiss, onCurrencySelect]
   )
 
-  // clear the input on open
   useEffect(() => {
+    console.log('CurrencySearch isOpen changed:', isOpen)
     if (isOpen) setSearchQuery('')
   }, [isOpen])
 
-  // manage focus on modal show
   const inputRef = useRef<HTMLInputElement>()
   const handleInput = useCallback(event => {
     const input = event.target.value
@@ -135,7 +130,13 @@ export function CurrencySearch({
     [filteredSortedTokens, handleCurrencySelect, searchQuery]
   )
 
-  // const selectedListInfo = useSelectedListInfo()
+  // const hasFetched = useRef(false)
+
+  // const fetchTokens = useCallback(async () => {
+  //   if (hasFetched.current) return
+  //   hasFetched.current = true
+  //   // 请求逻辑
+  // }, [])
 
   return (
     <Column style={{ width: '100%', flex: '1 1' }}>
@@ -168,7 +169,6 @@ export function CurrencySearch({
       </PaddedColumn>
 
       <Separator />
-
       <div style={{ flex: '1' }}>
         <AutoSizer disableWidth>
           {({ height }) => (
@@ -186,29 +186,6 @@ export function CurrencySearch({
       </div>
 
       <Separator />
-      {/* <Card>
-        <RowBetween>
-          {selectedListInfo.current ? (
-            <Row>
-              {selectedListInfo.current.logoURI ? (
-                <ListLogo
-                  style={{ marginRight: 12 }}
-                  logoURI={selectedListInfo.current.logoURI}
-                  alt={`${selectedListInfo.current.name} list logo`}
-                />
-              ) : null}
-              <TYPE.main id="currency-search-selected-list-name">{selectedListInfo.current.name}</TYPE.main>
-            </Row>
-          ) : null}
-          <LinkStyledButton
-            style={{ fontWeight: 500, color: theme.text2, fontSize: 16 }}
-            onClick={onChangeList}
-            id="currency-search-change-list-button"
-          >
-            {selectedListInfo.current ? 'Change' : 'Select a list'}
-          </LinkStyledButton>
-        </RowBetween>
-      </Card> */}
     </Column>
   )
 }

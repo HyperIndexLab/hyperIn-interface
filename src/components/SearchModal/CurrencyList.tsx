@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, currencyEquals, ETHER, Token } from 'hypherin-sdk'
-import React, { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
+import React, { CSSProperties, MutableRefObject, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import styled from 'styled-components'
@@ -173,38 +173,23 @@ export default function CurrencyList({
 }) {
   const itemData = useMemo(() => (showETH ? [Currency.ETHER, ...currencies] : currencies), [currencies, showETH])
 
-  const Row = useCallback(
-    ({ data, index, style }) => {
-      const currency: Currency = data[index]
-      const isSelected = Boolean(selectedCurrency && currencyEquals(selectedCurrency, currency))
-      const otherSelected = Boolean(otherCurrency && currencyEquals(otherCurrency, currency))
-      const handleSelect = () => onCurrencySelect(currency)
-      return (
-        <CurrencyRow
-          style={style}
-          currency={currency}
-          isSelected={isSelected}
-          onSelect={handleSelect}
-          otherSelected={otherSelected}
-        />
-      )
-    },
-    [onCurrencySelect, otherCurrency, selectedCurrency]
-  )
-
-  const itemKey = useCallback((index: number, data: any) => currencyKey(data[index]), [])
-
   return (
-    <FixedSizeList
-      height={height}
-      ref={fixedListRef as any}
-      width="100%"
-      itemData={itemData}
-      itemCount={itemData.length}
-      itemSize={56}
-      itemKey={itemKey}
-    >
-      {Row}
-    </FixedSizeList>
+    <div style={{ height, overflowY: 'auto' }}>
+      {itemData.map((currency, index) => {
+        const isSelected = Boolean(selectedCurrency && currencyEquals(selectedCurrency, currency))
+        const otherSelected = Boolean(otherCurrency && currencyEquals(otherCurrency, currency))
+        const handleSelect = () => onCurrencySelect(currency)
+        return (
+          <CurrencyRow
+            key={currencyKey(currency)}
+            style={{ height: 56 }} // Assuming each item has a height of 56px
+            currency={currency}
+            isSelected={isSelected}
+            onSelect={handleSelect}
+            otherSelected={otherSelected}
+          />
+        )
+      })}
+    </div>
   )
 }

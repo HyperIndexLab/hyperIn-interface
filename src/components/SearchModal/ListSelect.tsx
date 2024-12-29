@@ -11,7 +11,7 @@ import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 
 import useToggle from '../../hooks/useToggle'
 import { AppDispatch, AppState } from '../../state'
-import {  removeList, selectList } from '../../state/lists/actions'
+import { removeList, selectList } from '../../state/lists/actions'
 import { useSelectedListUrl } from '../../state/lists/hooks'
 import { CloseIcon, ExternalLink, LinkStyledButton, TYPE } from '../../theme'
 import listVersionLabel from '../../utils/listVersionLabel'
@@ -256,14 +256,19 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
   const adding = Boolean(lists[listUrlInput]?.loadingRequestId)
   const [addError, setAddError] = useState<string | null>(null)
 
+  const validUrl: boolean = useMemo(() => {
+    return uriToHttp(listUrlInput).length > 0 || Boolean(parseENSAddress(listUrlInput))
+  }, [listUrlInput])
+
   const handleInput = useCallback(e => {
     setListUrlInput(e.target.value)
     setAddError(null)
   }, [])
+
   const fetchList = useFetchListCallback()
 
   const handleAddList = useCallback(() => {
-    if (adding) return
+    if (adding || !validUrl) return
     setAddError(null)
     fetchList(listUrlInput)
       .then(() => {
@@ -283,11 +288,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
         setAddError(error.message)
         dispatch(removeList(listUrlInput))
       })
-  }, [adding, dispatch, fetchList, listUrlInput])
-
-  const validUrl: boolean = useMemo(() => {
-    return uriToHttp(listUrlInput).length > 0 || Boolean(parseENSAddress(listUrlInput))
-  }, [listUrlInput])
+  }, [adding, dispatch, fetchList, listUrlInput, validUrl])
 
   const handleEnterKey = useCallback(
     e => {
