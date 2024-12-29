@@ -15,7 +15,7 @@ export interface ListsState {
 
 const initialState: ListsState = {
   byUrl: {},
-  selectedListUrl: "https://explorer.hsk.xyz/api/v2/tokens"
+  selectedListUrl: ""
 }
 
 export default createReducer(initialState, builder =>
