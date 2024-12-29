@@ -4,7 +4,7 @@ import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '../../hooks'
-import { useSelectedTokenList, WrappedTokenInfo } from '../../state/lists/hooks'
+import { useSelectedTokenList } from '../../state/lists/hooks'
 import { useAddUserToken, useRemoveUserAddedToken } from '../../state/user/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { LinkStyledButton, TYPE } from '../../theme'
@@ -12,7 +12,7 @@ import { useIsUserAddedToken } from '../../hooks/Tokens'
 import Column from '../Column'
 import { RowFixed } from '../Row'
 import CurrencyLogo from '../CurrencyLogo'
-import { MouseoverTooltip } from '../Tooltip'
+// import { MouseoverTooltip } from '../Tooltip'
 import { FadedSpan, MenuItem } from './styleds'
 import Loader from '../Loader'
 import { isTokenOnList } from '../../utils'
@@ -28,57 +28,57 @@ const StyledBalanceText = styled(Text)`
   text-overflow: ellipsis;
 `
 
-const Tag = styled.div`
-  background-color: ${({ theme }) => theme.bg3};
-  color: ${({ theme }) => theme.text2};
-  font-size: 14px;
-  border-radius: 4px;
-  padding: 0.25rem 0.3rem 0.25rem 0.3rem;
-  max-width: 6rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  justify-self: flex-end;
-  margin-right: 4px;
-`
+// const Tag = styled.div`
+//   background-color: ${({ theme }) => theme.bg3};
+//   color: ${({ theme }) => theme.text2};
+//   font-size: 14px;
+//   border-radius: 4px;
+//   padding: 0.25rem 0.3rem 0.25rem 0.3rem;
+//   max-width: 6rem;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+//   white-space: nowrap;
+//   justify-self: flex-end;
+//   margin-right: 4px;
+// `
 
 function Balance({ balance }: { balance: CurrencyAmount }) {
   return <StyledBalanceText title={balance.toExact()}>{balance.toSignificant(4)}</StyledBalanceText>
 }
 
-const TagContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`
+// const TagContainer = styled.div`
+//   display: flex;
+//   justify-content: flex-end;
+// `
 
-function TokenTags({ currency }: { currency: Currency }) {
-  if (!(currency instanceof WrappedTokenInfo)) {
-    return <span />
-  }
+// function TokenTags({ currency }: { currency: Currency }) {
+//   if (!(currency instanceof WrappedTokenInfo)) {
+//     return <span />
+//   }
 
-  const tags = currency.tags
-  if (!tags || tags.length === 0) return <span />
+//   // const tags = currency.tags
+//   // if (!tags || tags.length === 0) return <span />
 
-  const tag = tags[0]
+//   // const tag = tags[0]
 
-  return (
-    <TagContainer>
-      <MouseoverTooltip text={tag.description}>
-        <Tag key={tag.id}>{tag.name}</Tag>
-      </MouseoverTooltip>
-      {tags.length > 1 ? (
-        <MouseoverTooltip
-          text={tags
-            .slice(1)
-            .map(({ name, description }) => `${name}: ${description}`)
-            .join('; \n')}
-        >
-          <Tag>...</Tag>
-        </MouseoverTooltip>
-      ) : null}
-    </TagContainer>
-  )
-}
+//   return (
+//     <TagContainer>
+//       <MouseoverTooltip text={tag.description}>
+//         <Tag key={tag.id}>{tag.name}</Tag>
+//       </MouseoverTooltip>
+//       {tags.length > 1 ? (
+//         <MouseoverTooltip
+//           text={tags
+//             .slice(1)
+//             .map(({ name, description }) => `${name}: ${description}`)
+//             .join('; \n')}
+//         >
+//           <Tag>...</Tag>
+//         </MouseoverTooltip>
+//       ) : null}
+//     </TagContainer>
+//   )
+// }
 
 function CurrencyRow({
   currency,
@@ -146,7 +146,7 @@ function CurrencyRow({
           ) : null}
         </FadedSpan>
       </Column>
-      <TokenTags currency={currency} />
+      {/* <TokenTags currency={currency} /> */}
       <RowFixed style={{ justifySelf: 'flex-end' }}>
         {balance ? <Balance balance={balance} /> : account ? <Loader /> : null}
       </RowFixed>

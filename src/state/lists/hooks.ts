@@ -1,35 +1,27 @@
 import { ChainId, Token } from 'hypherin-sdk'
-import { Tags, TokenInfo, TokenList } from '@uniswap/token-lists'
-import { useMemo } from 'react'
+import { TokenInfo } from '@uniswap/token-lists'
+import { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from '../index'
 
-type TagDetails = Tags[keyof Tags]
-export interface TagInfo extends TagDetails {
-  id: string
-}
 
-/**
- * Token instances created from token info.
- */
+export interface TokenAddressMap {
+  [chainId: number]: {
+    [tokenAddress: string]: Token
+  }
+}
 export class WrappedTokenInfo extends Token {
   public readonly tokenInfo: TokenInfo
-  public readonly tags: TagInfo[]
-  constructor(tokenInfo: TokenInfo, tags: TagInfo[]) {
+  constructor(tokenInfo: TokenInfo) {
     super(tokenInfo.chainId, tokenInfo.address, tokenInfo.decimals, tokenInfo.symbol, tokenInfo.name)
     this.tokenInfo = tokenInfo
-    this.tags = tags
   }
   public get logoURI(): string | undefined {
     return this.tokenInfo.logoURI
   }
 }
 
-export type TokenAddressMap = Readonly<{ [chainId in ChainId]: Readonly<{ [tokenAddress: string]: WrappedTokenInfo }> }>
 
-/**
- * An empty result, useful as a default.
- */
 const EMPTY_LIST: TokenAddressMap = {
   [ChainId.KOVAN]: {},
   [ChainId.RINKEBY]: {},
@@ -38,38 +30,6 @@ const EMPTY_LIST: TokenAddressMap = {
   [ChainId.MAINNET]: {},
   [ChainId.HASHKEY_TESTNET]:{},
   [ChainId.HASHKEY_MAINNET]:{},
-}
-
-const listCache: WeakMap<TokenList, TokenAddressMap> | null =
-  typeof WeakMap !== 'undefined' ? new WeakMap<TokenList, TokenAddressMap>() : null
-
-export function listToTokenMap(list: TokenList): TokenAddressMap {
-  const result = listCache?.get(list)
-  if (result) return result
-
-  const map = list.tokens.reduce<TokenAddressMap>(
-    (tokenMap, tokenInfo) => {
-      const tags: TagInfo[] =
-        tokenInfo.tags
-          ?.map(tagId => {
-            if (!list.tags?.[tagId]) return undefined
-            return { ...list.tags[tagId], id: tagId }
-          })
-          ?.filter((x): x is TagInfo => Boolean(x)) ?? []
-      const token = new WrappedTokenInfo(tokenInfo, tags)
-      if (tokenMap[token.chainId][token.address] !== undefined) throw Error('Duplicate tokens.')
-      return {
-        ...tokenMap,
-        [token.chainId]: {
-          ...tokenMap[token.chainId],
-          [token.address]: token
-        }
-      }
-    },
-    { ...EMPTY_LIST }
-  )
-  listCache?.set(list, map)
-  return map
 }
 
 export function useTokenList(url: string | undefined): TokenAddressMap {
@@ -81,7 +41,19 @@ export function useTokenList(url: string | undefined): TokenAddressMap {
     
     if (!current) return EMPTY_LIST
     try {
-      return listToTokenMap(current)
+      const tokenMap = current.tokens.reduce<TokenAddressMap>(
+        (acc, tokenInfo) => {
+          const token = new WrappedTokenInfo(tokenInfo)
+          const chainAddresses = { ...(acc[token.chainId] || {}) }
+          chainAddresses[token.address] = token
+          return {
+            ...acc,
+            [token.chainId]: chainAddresses
+          }
+        },
+        { ...EMPTY_LIST }
+      )
+      return tokenMap
     } catch (error) {
       console.error('Could not show token list due to error', error)
       return EMPTY_LIST
@@ -94,29 +66,50 @@ export function useSelectedListUrl(): string | undefined {
 }
 
 export function useSelectedTokenList(): TokenAddressMap {
-  return useTokenList(useSelectedListUrl())
-}
+  const [tokenMap, setTokenMap] = useState<TokenAddressMap>({})
 
-export function useSelectedListInfo(): { current: TokenList | null; pending: TokenList | null; loading: boolean } {
-  const selectedUrl = useSelectedListUrl()
-  const listsByUrl = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
-  const list = selectedUrl ? listsByUrl[selectedUrl] : undefined
-  return {
-    current: list?.current ?? null,
-    pending: list?.pendingUpdate ?? null,
-    loading: list?.loadingRequestId !== null
-  }
-}
+  useEffect(() => {
+    const fetchTokens = async () => {
+      try {
+        const response = await fetch('https://explorer.hsk.xyz/api/v2/tokens')
+        const data = await response.json()
+        const newTokenMap: TokenAddressMap = {}
 
-// returns all downloaded current lists
-export function useAllLists(): TokenList[] {
-  const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
+        data.items.forEach((item: any) => {
+          const decimals = parseInt(item.decimals)
+          const symbol=item.symbol;
+          if (isNaN(decimals)) {
+            console.warn(`Invalid decimals for token ${item.symbol}: ${item.decimals}`)
+            return // 跳过这个token
+          }
+          if(symbol==='LP'){
+            return;
+          }
 
-  return useMemo(
-    () =>
-      Object.keys(lists)
-        .map(url => lists[url].current)
-        .filter((l): l is TokenList => Boolean(l)),
-    [lists]
-  )
+          try {
+            const token = new Token(
+              ChainId.HASHKEY_MAINNET,
+              item.address,
+              decimals,
+              item.symbol,
+              item.name
+            )
+            if (!newTokenMap[ChainId.HASHKEY_MAINNET]) newTokenMap[ChainId.HASHKEY_MAINNET] = {}
+            newTokenMap[ChainId.HASHKEY_MAINNET][token.address] = token
+          } catch (error) {
+            console.warn(`Error creating token for ${item.symbol}:`, error)
+          }
+  
+        })
+
+        setTokenMap(newTokenMap)
+      } catch (error) {
+        console.error('Error fetching tokens:', error)
+      }
+    }
+
+    fetchTokens()
+  }, [])
+
+  return tokenMap
 }

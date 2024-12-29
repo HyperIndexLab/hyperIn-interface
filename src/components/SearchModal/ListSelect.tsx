@@ -11,7 +11,7 @@ import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 
 import useToggle from '../../hooks/useToggle'
 import { AppDispatch, AppState } from '../../state'
-import { acceptListUpdate, removeList, selectList } from '../../state/lists/actions'
+import {  removeList, selectList } from '../../state/lists/actions'
 import { useSelectedListUrl } from '../../state/lists/hooks'
 import { CloseIcon, ExternalLink, LinkStyledButton, TYPE } from '../../theme'
 import listVersionLabel from '../../utils/listVersionLabel'
@@ -93,7 +93,7 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
   const listsByUrl = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
   const selectedListUrl = useSelectedListUrl()
   const dispatch = useDispatch<AppDispatch>()
-  const { current: list, pendingUpdate: pending } = listsByUrl[listUrl]
+  const { current: list } = listsByUrl[listUrl]
 
   const isSelected = listUrl === selectedListUrl
 
@@ -122,15 +122,15 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
     onBack()
   }, [dispatch, isSelected, listUrl, onBack])
 
-  const handleAcceptListUpdate = useCallback(() => {
-    if (!pending) return
-    ReactGA.event({
-      category: 'Lists',
-      action: 'Update List from List Select',
-      label: listUrl
-    })
-    dispatch(acceptListUpdate(listUrl))
-  }, [dispatch, listUrl, pending])
+  // const handleAcceptListUpdate = useCallback(() => {
+  //   if (!pending) return
+  //   ReactGA.event({
+  //     category: 'Lists',
+  //     action: 'Update List from List Select',
+  //     label: listUrl
+  //   })
+  //   dispatch(acceptListUpdate(listUrl))
+  // }, [dispatch, listUrl, pending])
 
   const handleRemoveList = useCallback(() => {
     ReactGA.event({
@@ -200,9 +200,9 @@ const ListRow = memo(function ListRow({ listUrl, onBack }: { listUrl: string; on
             <UnpaddedLinkStyledButton onClick={handleRemoveList} disabled={Object.keys(listsByUrl).length === 1}>
               Remove list
             </UnpaddedLinkStyledButton>
-            {pending && (
+            {/* {pending && (
               <UnpaddedLinkStyledButton onClick={handleAcceptListUpdate}>Update list</UnpaddedLinkStyledButton>
-            )}
+            )} */}
           </PopoverContainer>
         )}
       </StyledMenu>
