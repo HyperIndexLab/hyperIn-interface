@@ -1,15 +1,15 @@
 import { ChainId, Token } from 'hypherin-sdk'
 import { TokenInfo } from '@uniswap/token-lists'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useRef, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from '../index'
-
 
 export interface TokenAddressMap {
   [chainId: number]: {
     [tokenAddress: string]: Token
   }
 }
+
 export class WrappedTokenInfo extends Token {
   public readonly tokenInfo: TokenInfo
   constructor(tokenInfo: TokenInfo) {
@@ -21,15 +21,14 @@ export class WrappedTokenInfo extends Token {
   }
 }
 
-
 const EMPTY_LIST: TokenAddressMap = {
   [ChainId.KOVAN]: {},
   [ChainId.RINKEBY]: {},
   [ChainId.ROPSTEN]: {},
   [ChainId.GÖRLI]: {},
   [ChainId.MAINNET]: {},
-  [ChainId.HASHKEY_TESTNET]:{},
-  [ChainId.HASHKEY_MAINNET]:{},
+  [ChainId.HASHKEY_TESTNET]: {},
+  [ChainId.HASHKEY_MAINNET]: {}
 }
 
 export function useTokenList(url: string | undefined): TokenAddressMap {
@@ -38,7 +37,7 @@ export function useTokenList(url: string | undefined): TokenAddressMap {
   return useMemo(() => {
     if (!url) return EMPTY_LIST
     const current = lists[url]?.current
-    
+
     if (!current) return EMPTY_LIST
     try {
       const tokenMap = current.tokens.reduce<TokenAddressMap>(
@@ -67,47 +66,44 @@ export function useSelectedListUrl(): string | undefined {
 
 export function useSelectedTokenList(): TokenAddressMap {
   const [tokenMap, setTokenMap] = useState<TokenAddressMap>({})
+  const hasFetched = useRef(false)
+
+  const fetchTokens = useCallback(async () => {
+    if (hasFetched.current) return
+
+    try {
+      const response = await fetch('https://explorer.hsk.xyz/api/v2/tokens')
+      const data = await response.json()
+      const newTokenMap: TokenAddressMap = {}
+
+      data.items.forEach((item: any) => {
+        const decimals = parseInt(item.decimals)
+        const symbol = item.symbol
+        if (isNaN(decimals)) {
+          console.warn(`Invalid decimals for token ${item.symbol}: ${item.decimals}`)
+          return
+        }
+        if (symbol === 'LP') {
+          return
+        }
+
+        try {
+          const token = new Token(ChainId.HASHKEY_MAINNET, item.address, decimals, item.symbol, item.name)
+          if (!newTokenMap[ChainId.HASHKEY_MAINNET]) newTokenMap[ChainId.HASHKEY_MAINNET] = {}
+          newTokenMap[ChainId.HASHKEY_MAINNET][token.address] = token
+        } catch (error) {
+          console.warn(`Error creating token for ${item.symbol}:`, error)
+        }
+      })
+
+      setTokenMap(newTokenMap)
+      hasFetched.current = true
+    } catch (error) {
+      console.error('Error fetching tokens:', error)
+    }
+  }, [])
 
   useEffect(() => {
-    const fetchTokens = async () => {
-      try {
-        const response = await fetch('https://explorer.hsk.xyz/api/v2/tokens')
-        const data = await response.json()
-        const newTokenMap: TokenAddressMap = {}
-
-        data.items.forEach((item: any) => {
-          const decimals = parseInt(item.decimals)
-          const symbol=item.symbol;
-          if (isNaN(decimals)) {
-            console.warn(`Invalid decimals for token ${item.symbol}: ${item.decimals}`)
-            return // 跳过这个token
-          }
-          if(symbol==='LP'){
-            return;
-          }
-
-          try {
-            const token = new Token(
-              ChainId.HASHKEY_MAINNET,
-              item.address,
-              decimals,
-              item.symbol,
-              item.name
-            )
-            if (!newTokenMap[ChainId.HASHKEY_MAINNET]) newTokenMap[ChainId.HASHKEY_MAINNET] = {}
-            newTokenMap[ChainId.HASHKEY_MAINNET][token.address] = token
-          } catch (error) {
-            console.warn(`Error creating token for ${item.symbol}:`, error)
-          }
-  
-        })
-
-        setTokenMap(newTokenMap)
-      } catch (error) {
-        console.error('Error fetching tokens:', error)
-      }
-    }
-
     fetchTokens()
   }, [])
 

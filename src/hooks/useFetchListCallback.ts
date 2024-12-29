@@ -32,19 +32,20 @@ export function useFetchListCallback(): (listUrl: string) => Promise<TokenList> 
 
   return useCallback(
     async (listUrl: string) => {
+      if (!listUrl) throw new Error('No list URL provided')
+
       const requestId = nanoid()
-      console.log('requestId===',requestId)
       dispatch(fetchTokenList.pending({ requestId, url: listUrl }))
-      return getTokenList(listUrl, ensResolver)
-        .then(tokenList => {
-          dispatch(fetchTokenList.fulfilled({ url: listUrl, tokenList, requestId }))
-          return tokenList
-        })
-        .catch(error => {
-          console.debug(`Failed to get list at url ${listUrl}`, error)
-          dispatch(fetchTokenList.rejected({ url: listUrl, requestId, errorMessage: error.message }))
-          throw error
-        })
+
+      try {
+        const tokenList = await getTokenList(listUrl, ensResolver)
+        dispatch(fetchTokenList.fulfilled({ url: listUrl, tokenList, requestId }))
+        return tokenList
+      } catch (error) {
+        console.debug(`Failed to get list at url ${listUrl}`, error)
+        dispatch(fetchTokenList.rejected({ url: listUrl, requestId, errorMessage: 'error' }))
+        throw error
+      }
     },
     [dispatch, ensResolver]
   )
