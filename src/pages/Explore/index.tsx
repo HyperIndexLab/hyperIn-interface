@@ -225,11 +225,11 @@ export default function Explore() {
 								<div className="table-cell">{row.price} USD</div>
 								<div className={`table-cell change ${row.change1H >= 0 ? 'green' : 'red'}`}>
 									<div className="triangle"></div>
-									{formatNumber(row.change1H, 2)}%
+									{row.change1H}
 								</div>
 								<div className={`table-cell change ${row.change24H >= 0 ? 'green' : 'red'}`}>
 									<div className="triangle"></div>
-									{formatNumber(row.change24H, 2)}%
+									{row.change24H}
 								</div>
 								<div className="table-cell">{row.FDV} USD</div>
 								<div className="table-cell">{formatNumber(row.tradingVolume, 2)} USD</div>
