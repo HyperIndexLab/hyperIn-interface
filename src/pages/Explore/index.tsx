@@ -223,11 +223,11 @@ export default function Explore() {
 								<div className="table-cell">{row.id}</div>
 								<div className="table-cell">{row.name}</div>
 								<div className="table-cell">{row.price} USD</div>
-								<div className={`table-cell change ${row.change1H >= 0 ? 'green' : 'red'}`}>
+								<div className={`table-cell change ${row.change1H.includes('-') ? 'red' : 'green'}`}>
 									<div className="triangle"></div>
 									{row.change1H}
 								</div>
-								<div className={`table-cell change ${row.change24H >= 0 ? 'green' : 'red'}`}>
+								<div className={`table-cell change ${row.change24H.includes('-') ? 'red' : 'green'}`}>
 									<div className="triangle"></div>
 									{row.change24H}
 								</div>
