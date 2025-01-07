@@ -116,7 +116,7 @@ export default function RemoveLiquidity({
     ]
     // pair.liquidityToken.
     const domain = {
-      name: 'HyperIndex LP Token',
+      name: 'Hyperindex LP Token',
       version: '1',
       chainId: chainId,
       verifyingContract: pair.liquidityToken.address
