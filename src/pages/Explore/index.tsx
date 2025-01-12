@@ -5,6 +5,7 @@ import fetchWrapper from '../../utils/fetch';
 import { NavLink } from 'react-router-dom'
 import Loader from '../../components/Loader'
 import { useIsDarkMode } from '../../state/user/hooks';
+import { ethers } from 'ethers';
 // import { ethers } from 'ethers';
 // import stablePool2Abi from '../../constants/abis/stablePool2.json';
 
@@ -20,6 +21,15 @@ export const formatNumber = (
   return fixedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
+const formatTradeVolume = (value:any,symbol: string,decimals: number): string => {
+	let formatUnit;
+	if(symbol === 'USDT') {
+		formatUnit = ethers.utils.formatUnits(value,6);
+	} else {
+		formatUnit = ethers.utils.formatUnits(value,decimals);
+	}
+	return `${formatUnit} ${symbol}`
+}
 
 export default function Explore() {
   // const theme = useContext(ThemeContext)
@@ -221,7 +231,7 @@ export default function Explore() {
 						<NavLink to={`/swap/${row.address}`} key={row.id} style={{ textDecoration: 'none' }}>
 							<div className="table-row body" key={row.id}>
 								<div className="table-cell">{row.id}</div>
-								<div className="table-cell">{row.name}</div>
+								<div className="table-cell">{row.symbol}</div>
 								<div className="table-cell">{row.price} USD</div>
 								<div className={`table-cell change ${row.change1H.includes('-') ? 'red' : 'green'}`}>
 									<div className="triangle"></div>
@@ -232,7 +242,7 @@ export default function Explore() {
 									{row.change24H}
 								</div>
 								<div className="table-cell">{row.FDV} USD</div>
-								<div className="table-cell">{formatNumber(row.tradingVolume, 2)} USD</div>
+								<div className="table-cell">{formatTradeVolume(row.tradingVolume,row.symbol,row.decimals)}</div>
 							</div>
 						</NavLink>
 					)
