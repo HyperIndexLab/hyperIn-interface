@@ -41,7 +41,7 @@ export default async function fetchWrapper(
     }
 
     return await response.json();
-  } catch (error) {
+  } catch (error: any) {
     if (error.name === 'AbortError') {
       throw new Error('Request timed out');
     }
