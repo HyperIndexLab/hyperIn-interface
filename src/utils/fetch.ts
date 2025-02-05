@@ -10,7 +10,7 @@ export default async function fetchWrapper(
 	url: string,
   options: FetchOptions = {}
 ): Promise<any> {
-	const { method = 'GET', headers, body, queryParams, timeout = 10000 } = options;
+	const { method = 'GET', headers, body, queryParams, timeout = 100000 } = options;
   
   let fullUrl = 'https://api.hyperindex.trade' + url;
   // let fullUrl = 'http://localhost:3001' + url;

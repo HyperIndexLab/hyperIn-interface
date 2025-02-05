@@ -260,7 +260,13 @@ export default function Explore() {
               <div className="table-cell">{row.id}</div>
               <div className="table-cell">{row.pairsName}</div>
               <div className="table-cell">{row.TVL} USD</div>
-              <div className="table-cell" style={{ color: row.APY > 100 ? 'red' : 'inherit' }}>
+              <div
+                className="table-cell"
+                style={{
+                  color: row.APY > 100 ? 'red' : 'inherit',
+                  fontWeight: row.APY > 100 ? 'bold' : 'normal'
+                }}
+              >
                 {formatNumber(row.APY, 3)}%
               </div>
               <div className="table-cell">{formatNumber(row.tradingVolume1D, 2)} USD</div>
